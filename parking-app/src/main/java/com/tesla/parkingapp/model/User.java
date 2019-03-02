@@ -32,6 +32,15 @@ public class User {
 	@Column(name = "telefon")
 	private String telefon;
 
+	public User(String username, String passwd, String name, String grad, String telefon) {
+		super();
+		this.username = username;
+		this.passwd = passwd;
+		this.name = name;
+		this.grad = grad;
+		this.telefon = telefon;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -80,14 +89,5 @@ public class User {
 		this.telefon = telefon;
 	}
 
-	public User(String username, String passwd, String name, String grad, String telefon) {
-		super();
-		this.username = username;
-		this.passwd = passwd;
-		this.name = name;
-		this.grad = grad;
-		this.telefon = telefon;
-	}
-	
 	
 }
