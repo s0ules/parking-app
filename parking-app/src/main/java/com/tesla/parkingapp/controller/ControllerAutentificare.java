@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tesla.parkingapp.model.User;
 
 public class ControllerAutentificare {
-	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
+	/*@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login"); // resources/template/login.html
@@ -28,5 +28,5 @@ public class ControllerAutentificare {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("home"); // resources/template/home.html
 		return modelAndView;
-	}
+	}*/
 }
