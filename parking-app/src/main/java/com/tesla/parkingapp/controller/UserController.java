@@ -69,6 +69,14 @@ public class UserController {
   return model;
  }
  
+ @RequestMapping(value= {"/", "/file"}, method=RequestMethod.GET)
+ public ModelAndView file() {
+  ModelAndView model = new ModelAndView();
+  
+  model.setViewName("/file");
+  return model;
+ }
+ 
  @RequestMapping(value= {"/access_denied"}, method=RequestMethod.GET)
  public ModelAndView accessDenied() {
   ModelAndView model = new ModelAndView();
