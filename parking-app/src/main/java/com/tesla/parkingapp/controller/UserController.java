@@ -69,11 +69,15 @@ public class UserController {
   return model;
  }
  
- @RequestMapping(value= {"/", "/file"}, method=RequestMethod.GET)
- public ModelAndView file() {
+ @RequestMapping(value= {"/admin"}, method=RequestMethod.GET)
+ public ModelAndView admin() {
   ModelAndView model = new ModelAndView();
   
-  model.setViewName("/file");
+  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+  User user = userService.findUserByEmail(auth.getName());
+  
+  model.addObject("userName", user.getEmail());
+  model.setViewName("/admin");
   return model;
  }
  
@@ -83,4 +87,5 @@ public class UserController {
   model.setViewName("errors/access_denied");
   return model;
  }
+ 
 }

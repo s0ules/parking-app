@@ -14,11 +14,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.tesla.parkingapp.utils.CustomSuccessHandler;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private CustomSuccessHandler customSuccessHandler;
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -36,34 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
 				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
 	}
-
-/*	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-
-		http.authorizeRequests()
-				// URLs matching for access rights
-				.antMatchers("/").permitAll()
-				.antMatchers("/login").permitAll()
-				.antMatchers("/signup").permitAll()
-				.antMatchers("/home/**").hasAnyAuthority("ADMIN_USER", "SITE_USER")
-				.antMatchers("/admin/**").hasAuthority("ADMIN_USER")
-				.anyRequest().authenticated()
-				.and()
-				// form login
-				.csrf().disable().formLogin()
-				.loginPage("/login")
-				.failureUrl("/login?error=true")
-				.defaultSuccessUrl("/home")
-				.usernameParameter("email")
-				.passwordParameter("password")
-				.and()
-				// logout
-				.logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/").and()
-				.exceptionHandling()
-				.accessDeniedPage("/access-denied");
-	}*/
 	
 	 @Override
 	 protected void configure(HttpSecurity http) throws Exception{
@@ -71,11 +48,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	   .antMatchers("/").permitAll()
 	   .antMatchers("/login").permitAll()
 	   .antMatchers("/signup").permitAll()
-	   .antMatchers("/file").permitAll()
-	   .antMatchers("/home/**").hasAuthority("ADMIN_USER").anyRequest()
+	   .antMatchers("/admin").hasAuthority("ADMIN_USER")
+	   .antMatchers("/home/**").permitAll().anyRequest()
 	   .authenticated().and().csrf().disable()
 	   .formLogin().loginPage("/login").failureUrl("/login?error=true")
-	   .defaultSuccessUrl("/home")
+	   .successHandler(customSuccessHandler)
 	   .usernameParameter("email")
 	   .passwordParameter("password")
 	   .and().logout()
