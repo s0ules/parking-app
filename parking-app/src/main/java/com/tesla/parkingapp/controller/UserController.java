@@ -58,6 +58,17 @@ public class UserController {
   return model;
  }
  
+ @RequestMapping(value= {"/user"}, method=RequestMethod.GET)
+ public ModelAndView user() {
+  ModelAndView model = new ModelAndView();
+  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+  User user = userService.findUserByEmail(auth.getName());
+  
+  model.addObject("userName", user.getEmail());
+  model.setViewName("/user");
+  return model;
+ }
+ 
  @RequestMapping(value= {"/home"}, method=RequestMethod.GET)
  public ModelAndView home() {
   ModelAndView model = new ModelAndView();
