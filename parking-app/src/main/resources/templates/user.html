@@ -11,34 +11,22 @@
     <!-- Fonts -->
     
     <!-- CSS File -->
-    <link rel="stylesheet" href="css/signup.css" type="text/css">
+    <link rel="stylesheet" href="css/user.css" type="text/css">
     <title>ParkingApp</title>
-  
+ 
 </head>
 <body>
-    <div class="container-fluid height-full">
+    <div class="container-fluid  height-full">
         <div id="logo" class="row d-flex justify-content-center">
             <h1 class="col-xl-12">Tesla</h1>
         </div>
-        <div class="container row main height-full width-full">
-            <div class="row width-full">
-                <form class="width-full" th:action="@{/login}" method="post">
-                  <div class="row form-group verical-space">
-                    <input class="col-xl-12 col-md-12 form-control" type="text" id="name" placeholder="Name">
-                  </div>
-                  <div class="row form-group verical-space">
-                    <input class="col-xl-12 col-md-12 form-control" type="number" id="phone" placeholder="Phone">
-                  </div>
-                  <div class="row form-group verical-space">
-                    <input class="col-xl-12 col-md-12 form-control" type="email" id="email" name="email" aria-describedby="emailHelp" placeholder="Username">
-                  </div>
-                  <div class="row form-group verical-space">
-                    <input class="col-xl-12 col-md-12 form-control" type="password" id="password" name="password" placeholder="Password">
-                  </div>
-                  <div class="row verical-space">    
-                    <button type="submit" class="btn-style col-xl-12" id="register">Register</button>
-                  </div>
-                </form>
+        <div class="container search height-full width-full">
+            <div class="row width-full main">
+                <div class="col-sm-12 col-xl-4 buttons">
+                    <button>Reservations</button>
+                    <button>Make reservation</button>
+                </div>
+                <div class="col-sm-12 col-xl-7 show"></div>
             </div>
         </div>
     </div>

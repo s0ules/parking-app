@@ -1,19 +1,24 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
- xmlns:th="http://www.thymeleaf.org">
+ xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    
+    <!-- Bootstrap CSS 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+ <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
     <!-- Fonts -->
     
     <!-- CSS File -->
-    <link rel="stylesheet" href="css/login.css" type="text/css">
+    <link rel="stylesheet" href="css/login.css">
     <title>ParkingApp</title>
+
 </head>
 <body>
     <div class="container-fluid height-full">
@@ -24,14 +29,15 @@
             <div class="row width-full">
                 <form class="width-full" th:action="@{/login}" method="post">
                   <div class="row form-group verical-space">
-                    <input class="col-xl-12 col-md-12 form-control" type="email" id="email" name="email" aria-describedby="emailHelp" placeholder="Email">
+                    <input class="col-xl-12 col-md-12 form-control" type="email" id="email" name="email" aria-describedby="emailHelp" placeholder="Username">
                   </div>
                   <div class="row form-group verical-space">
                     <input class="col-xl-12 col-md-12 form-control" type="password" id="password" name="password" placeholder="Password">
                   </div>
                   <div class="row verical-space">    
-                    <button type="submit" class="btn-style col-xl-6" name="action" value="login">Login</button>
-                     <div class="margin-top20 text-center btn-style col-xl-6" id="register"><a th:href="@{/signup}">Register</a></div>
+                    <button type="submit" class="btn-style col-xl-6">Login</button>
+                     
+<div class="btn-style col-xl-6" id="register"><a th:href="@{/signup}" >Register</a></div>
                   </div>
                 </form>
             </div>

@@ -77,7 +77,4 @@ public class Parcare {
 	public String toString() {
 		return "Parcare [nr_locuri=" + nr_locuri + ", adresa=" + adresa + "]";
 	}
-	
-	
-	
 }
