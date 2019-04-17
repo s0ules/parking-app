@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.tesla.parkingapp.model.Parcare;
 
 @Repository("parcareRepository")
-public interface ParcareRepository extends JpaRepository<Parcare, Long>{
+public interface ParcareRepository extends JpaRepository<Parcare, Integer>{
+	
 	 List<Parcare> findAll();
+	
 }

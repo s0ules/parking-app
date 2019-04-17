@@ -23,5 +23,14 @@ public class ParcareServiceImpl implements ParcareService{
 	public void saveParcare(Parcare parcare) {
 		parcareRepository.save(parcare);
 	}
-	
+
+	@Override
+	public void updateParcare(Parcare parcare) {
+		parcareRepository.save(parcare);		
+	}
+
+	@Override
+	public void deleteParcare(int id) {
+		parcareRepository.deleteById(id);
+	}
 }

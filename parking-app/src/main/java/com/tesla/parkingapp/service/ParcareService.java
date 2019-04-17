@@ -9,4 +9,8 @@ public interface ParcareService {
 	public List<Parcare> findAll();
 	
 	public void saveParcare(Parcare parcare);
+	
+	public void updateParcare(Parcare parcare);
+	
+	public void deleteParcare(int id);
 }
