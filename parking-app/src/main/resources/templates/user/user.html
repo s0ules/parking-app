@@ -25,16 +25,14 @@
             <h1 class="col-xl-12">Tesla</h1>
         </div>
         <div class="container search height-full width-full">
-            <div class="row width-full main">
-                <div class="col-sm-12 col-xl-4 buttons">
+            <div id="map"class="row width-full main">
+                <!--  <div class="col-sm-12 col-xl-4 buttons">
                     <button>Reservations</button>
                     <button>Make reservation</button>
                     <th:block th:utext="${parcari[0].adresa}"/>
                 </div>
-                <div id="map" class="col-sm-12 col-xl-7 show"></div>
-                <form action="#" th:action="@{/addParcare}" method="POST">
-                <input id="submit" type="submit" name="add" value="Adauga parcare">
-                </form>
+                <div  class="col-sm-12 col-xl-7 show"></div>-->
+
             </div>
         </div>
     </div>
@@ -63,15 +61,19 @@
       function geocodeAddress(geocoder, resultsMap) {
     	  
     	  var ListAdresses = [[${parcari}]];
+    	  var infowindow = new google.maps.InfoWindow();
           for (i = 0; i < ListAdresses.length; i++) {
-        	  var infowindow = new google.maps.InfoWindow();
+        	  
            	  var address = ListAdresses[i].adresa;
            	  var nr_locuri = ListAdresses[i].nr_locuri;
            	  var lat = ListAdresses[i].latitudine;
            	  var lng = ListAdresses[i].longitudine;
            	  var id = ListAdresses[i].id_parcare;
         	  address += (' ,Cluj-Napoca, RO'); 
-        	  var html = nr_locuri + "<br>" + address + "<br>" + "<input type='submit' id='" + id + "' name='rezerva' value='Rezerva' /> ";
+        	  var status = ListAdresses[i].status;
+        	  var html = "CLOSED" + "<br>" + address + "<br>";
+        	  if (status == 1)
+        	  	html = "locuri: " + nr_locuri + "<br>" + address + "<br>" + "<input type='submit' id='" + id + "' name='rezerva' value='Rezerva' /> ";
         	  
         	  var marker = new google.maps.Marker({
                   map: resultsMap,

@@ -86,12 +86,14 @@
                   "<div class='row form-group verical-space'>" +
                   "<input class='col-xl-12 col-md-12 form-control' type='text' id='name' name='adresa' th:field='*{adresa}' placeholder='Adress' value='" + address + "'>" +
                 "</div>" +
-                "<div class='row form-group verical-space'>" +
-                  "<input class='col-xl-12 col-md-12 form-control' type='number' id='phone' name='nr_locuri' th:field='*{nr_locuri}' placeholder='Number of spots' value='" + nr_locuri + "'>" + 
+                "<div class='row form-group verical-space' style='float:left'>" +
+                  "<label for='nr_locuri'>locuri: </label> <input class=' form-control' type='number' id='nr_locuri' name='nr_locuri' th:field='*{nr_locuri}' placeholder='Number of spots' value='" + nr_locuri + "'>" + 
                 "</div>" +
                 "<div class='row form-group verical-space'>" +
-                  "<button class='col-xl-6 col-md-6 form-control delete' id='close'>CLOSE</button>" +
-                  "<button class='col-xl-6 col-md-6 form-control add' hidden id='open'>OPEN</button>" +
+                "<label class='switch'>" +
+                "<input id='remember' type='checkbox' checked>" +
+                "<span class='slider round'></span>" +
+              	"</label><br><br>" +
                 "</div>" +
                 "<div class='row verical-space'>" +
                   "<button type='submit' class='btn-style col-xl-4 add' name='add'>Add</button>" +
