@@ -8,21 +8,33 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.tesla.parkingapp.model.User;
+import com.tesla.parkingapp.service.UserService;
 
 @Component
+@SessionAttributes("user")
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+	
 
+	@Autowired
+	private UserService userService;
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
+    	
+    	User user = userService.findUserByEmail(authentication.getName());
+    	request.getSession().setAttribute("user", user.getEmail());
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
@@ -35,10 +47,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
  
     protected String determineTargetUrl(Authentication authentication) {
+    	
         String url = "";
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
+        
         List<String> roles = new ArrayList<String>();
 
         for (GrantedAuthority a : authorities) {

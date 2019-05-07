@@ -1,33 +1,38 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
- xmlns:th="http://www.thymeleaf.org" lang="en">
+	xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    
-    <!-- Fonts -->
-    
-    <!-- CSS File -->
-    <link rel="stylesheet" href="css/administrare-parcare.css" type="text/css">
-    <title>ParkingApp</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+<!-- Fonts -->
+
+<!-- CSS File -->
+<link rel="stylesheet" href="css/administrare-parcare.css"
+	type="text/css">
+<title>ParkingApp</title>
 </head>
 <body>
-    <div class="container-fluid height-full">
-        <div class="container row menu">
-            <ul>
-                <li>LogOut</li>
-            </ul>
-        </div>
-        <div id="logo" class="row d-flex justify-content-center">
-            <h1 class="col-xl-12">Tesla</h1>
-        </div>
-        <div class="container row main height-full width-full">
-            <div class="row width-full" id="map">
-                <!--  <form class="width-full" th:action="@{/administrare-parcare}" th:object="${parcare}"  method="post">
+	<div class="container-fluid height-full">
+		<div class="container row menu">
+			<ul>
+				<li>LogOut</li>
+			</ul>
+		</div>
+		<div id="logo" class="row d-flex justify-content-center">
+			<h1 class="col-xl-12">Tesla</h1>
+		</div>
+		<div class="container row main height-full width-full">
+			<div class="row width-full" id="map">
+				<!--  <form class="width-full" th:action="@{/administrare-parcare}" th:object="${parcare}"  method="post">
                   <div class="row form-group verical-space">
                     <input class="col-xl-12 col-md-12 form-control" type="text" id="name" name="adresa" th:field="*{adresa}" placeholder="Adress">
                   </div>
@@ -44,45 +49,33 @@
                     <button type="submit" class="btn-style col-xl-4 update" name="update">Update</button>
                   </div>
                 </form>-->
-            </div>
-        </div>
-    </div>
- 
-<!-- Optional JavaScript -->
-<script th:inline="javascript">
+			</div>
+		</div>
+	</div>
 
-  // initialize the map
- // var map = L.map('map').setView([46.769605, 23.588730], 13);
-
-  // load a tile layer
- // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-   // {
-     // maxZoom: 17,
-      //minZoom: 9
-   // }).addTo(map);
+	<!-- Optional JavaScript -->
+	<script th:inline="javascript">
  
-      function initMap() {
+function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
           center: {lat: 46.769605, lng: 23.588730}
         });
         var geocoder = new google.maps.Geocoder();
-          geocodeAddress(geocoder, map);
+        geocodeAddress(geocoder, map);
       }
 
       function geocodeAddress(geocoder, resultsMap) {
-    	  
     	  var ListAdresses = [[${parcari}]];
+    	  var infowindow = new google.maps.InfoWindow();
           for (i = 0; i < ListAdresses.length; i++) {
-        	  var infowindow = new google.maps.InfoWindow();
-           	  var address = ListAdresses[i].adresa;
+              var address = ListAdresses[i].adresa;
            	  var nr_locuri = ListAdresses[i].nr_locuri;
            	  var lat = ListAdresses[i].latitudine;
            	  var lng = ListAdresses[i].longitudine;
-           	  var id = ListAdresses[i].id_parcare;
-        	  address += (' ,Cluj-Napoca, RO'); 
+           	  var id = ListAdresses[i].parcareId;
         	  var html = "<form class='width-full' th:action='@{/administrare-parcare}' th:object='${parcare}'  method='post'>" +
-        	  	"<input type='hidden' name='id_parcare' th:field='*{id_parcare}' value='" + id + "'>" +
+        	  	"<input type='hidden' name='parcareId' th:field='*{parcareId}' value='" + id + "'>" +
                   "<div class='row form-group verical-space'>" +
                   "<input class='col-xl-12 col-md-12 form-control' type='text' id='name' name='adresa' th:field='*{adresa}' placeholder='Adress' value='" + address + "'>" +
                 "</div>" +
@@ -107,20 +100,7 @@
                   position: new google.maps.LatLng(lat, lng),
                 });
         	  makeInfoWindowEvent(map, infowindow, html, marker);
-           /* geocoder.geocode({'address': address}, function(results, status) {
-              if (status === 'OK') {
-                resultsMap.setCenter(results[0].geometry.location);
-                console.log(this.address + " " + results[0].geometry.location.lat() + "  " + results[0].geometry.location.lng());
-                var marker = new google.maps.Marker({
-                  map: resultsMap,
-                  position: results[0].geometry.location
-                });
- 
-                makeInfoWindowEvent(map, infowindow, html, marker);
-              } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-              }
-            });*/
+          
           }
           
           function makeInfoWindowEvent(map, infowindow, contentString, marker) {
@@ -132,12 +112,20 @@
       }
 
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvoYpTH5xFcgsi8CW6Gh7eimOd6AoOIUY&callback=initMap">
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvoYpTH5xFcgsi8CW6Gh7eimOd6AoOIUY&callback=initMap">
     </script>
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
 </body>
 </html>

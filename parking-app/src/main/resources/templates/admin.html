@@ -22,7 +22,7 @@
         </div>
         <div class="container search height-full width-full">
             <div class="row width-full main">
-                <div class="col-sm-12 col-xl-4 buttons">
+                <div class="col-sm-12 col-xl-4 buttons"> <p th:text="${session.user}" th:unless="${session == null}"> . </p> 
                     <button>Car numbers</button>
                     <button>Reservations</button>
                     <button>Profit</button>

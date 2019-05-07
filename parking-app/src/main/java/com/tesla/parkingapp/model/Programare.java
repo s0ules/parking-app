@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Date;
 
@@ -21,6 +23,10 @@ public class Programare {
 	
 	@Column(name = "ora_sfarsit")
 	private Date ora_sfarsit;
+	
+	@ManyToOne
+    @JoinColumn(name = "id_statie")
+    private Statie statie;
 	
 	public Programare() {
 		
@@ -55,4 +61,14 @@ public class Programare {
 	public void setOra_sfarsit(Date ora_sfarsit) {
 		this.ora_sfarsit = ora_sfarsit;
 	}
+
+	public Statie getStatie() {
+		return statie;
+	}
+
+	public void setStatie(Statie statie) {
+		this.statie = statie;
+	}
+	
+	
 }

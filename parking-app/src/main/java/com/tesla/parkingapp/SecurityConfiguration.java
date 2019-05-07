@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -23,7 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private CustomSuccessHandler customSuccessHandler;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -35,39 +36,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Value("${spring.queries.roles-query}")
 	private String rolesQuery;
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
 				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
 	}
-	
-	 @Override
-	 protected void configure(HttpSecurity http) throws Exception{
-	  http.authorizeRequests()
-	   .antMatchers("/").permitAll()
-	   .antMatchers("/login").permitAll()
-	   .antMatchers("/signup").permitAll()
-	   .antMatchers("/user").permitAll()
-	   .antMatchers("/home").permitAll()
-	   .antMatchers("/admin").hasAuthority("ADMIN_USER")
-	   .antMatchers("/user").hasAnyAuthority("SITE_USER", "ADMIN_USER")
-	   .antMatchers("/administrare-parcare").hasAuthority("ADMIN_USER")
-	   .antMatchers("/home/**").permitAll().anyRequest()
-	   .authenticated().and().csrf().disable()
-	   .formLogin().loginPage("/login").failureUrl("/login?error=true")
-	   .successHandler(customSuccessHandler)
-	   .usernameParameter("email")
-	   .passwordParameter("password")
-	   .and().logout()
-	   .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-	   .logoutSuccessUrl("/")
-	   .and().exceptionHandling().accessDeniedPage("/access_denied");
-	 }
-	 	
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+		http.sessionManagement().maximumSessions(1);
+		http.sessionManagement().invalidSessionUrl("/login").sessionAuthenticationErrorUrl("/login");
+		
+		http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/login").permitAll().antMatchers("/signup")
+				.permitAll().antMatchers("/user").permitAll().antMatchers("/home").permitAll().antMatchers("/admin")
+				.hasAuthority("ADMIN_USER").antMatchers("/user").hasAnyAuthority("SITE_USER", "ADMIN_USER")
+				.antMatchers("/administrare-parcare").hasAuthority("ADMIN_USER").antMatchers("/home/**").permitAll()
+				.anyRequest().authenticated().and().csrf().disable().formLogin().loginPage("/login")
+				.failureUrl("/login?error=true").successHandler(customSuccessHandler).usernameParameter("email")
+				.passwordParameter("password").and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/").and().exceptionHandling().accessDeniedPage("/access_denied");
+	}
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
 	}
-	
+
 }

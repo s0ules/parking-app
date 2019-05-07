@@ -1,16 +1,20 @@
 package com.tesla.parkingapp.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +23,7 @@ public class Parcare {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_parcare;
+	private int parcareId;
 	
 	@Column(name = "nr_locuri")
 	private int nr_locuri;
@@ -36,17 +40,21 @@ public class Parcare {
 	@Column(name = "longitudine")
 	private double longitudine;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+/*	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "programare_parcare", joinColumns = @JoinColumn(name = "id_parcare"), inverseJoinColumns = @JoinColumn(name = "id_programare"))
 	private Set<Programare> programari;
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "parcare", cascade = CascadeType.ALL)
+	private Set<Statie> statii;
+	//private List<Statie> statii = new ArrayList<>();
+	*/
 	public Parcare() {
 		
 	}
 	
-	public Parcare(int id_parcare, int nr_locuri, String adresa, Boolean status, Double lat, Double lng) {
+	public Parcare(int parcareId, int nr_locuri, String adresa, Boolean status, Double lat, Double lng) {
 		super();
-		this.id_parcare = id_parcare;
+		this.parcareId = parcareId;
 		this.nr_locuri = nr_locuri;
 		this.adresa = adresa;
 		this.status = status;
@@ -54,12 +62,12 @@ public class Parcare {
 		this.longitudine = lng;
 	}
 
-	public int getId_parcare() {
-		return id_parcare;
+	public int getParcareId() {
+		return parcareId;
 	}
 
-	public void setId_parcare(int id_parcare) {
-		this.id_parcare = id_parcare;
+	public void setParcareId(int parcareId) {
+		this.parcareId = parcareId;
 	}
 
 	public int getNr_locuri() {
@@ -102,17 +110,35 @@ public class Parcare {
 		this.longitudine = longitudine;
 	}
 
-	public Set<Programare> getProgramari() {
+/*	public Set<Programare> getProgramari() {
 		return programari;
 	}
 
 	public void setProgramari(Set<Programare> programari) {
 		this.programari = programari;
 	}
+*/
+	
+	
+	/*public List<Statie> getStatii() {
+		return statii;
+	}
 
+	public void setStatii(List<Statie> statii) {
+		this.statii = statii;
+	}
+
+	public Set<Statie> getStatii() {
+		return statii;
+	}
+
+	public void setStatii(Set<Statie> statii) {
+		this.statii = statii;
+	}
+	*/
 	@Override
 	public String toString() {
-		return "Parcare [id_parcare=" + id_parcare + ", nr_locuri=" + nr_locuri + ", adresa=" + adresa + ", status="
+		return "Parcare [id_parcare=" + parcareId + ", nr_locuri=" + nr_locuri + ", adresa=" + adresa + ", status="
 				+ status + "]";
 	}
 
