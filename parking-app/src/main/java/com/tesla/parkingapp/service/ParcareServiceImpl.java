@@ -33,4 +33,9 @@ public class ParcareServiceImpl implements ParcareService{
 	public void deleteParcare(int id) {
 		parcareRepository.deleteById(id);
 	}
+
+	@Override
+	public Parcare findById(int id) {
+		return parcareRepository.findById(id);
+	}
 }

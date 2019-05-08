@@ -8,7 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.sql.Date;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "programare")
@@ -19,13 +23,15 @@ public class Programare {
 	private int id_programare;
 	
 	@Column(name = "ora_inceput")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date ora_inceput;
 	
 	@Column(name = "ora_sfarsit")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date ora_sfarsit;
 	
 	@ManyToOne
-    @JoinColumn(name = "id_statie")
+    @JoinColumn(name = "statie_id")
     private Statie statie;
 	
 	public Programare() {

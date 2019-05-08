@@ -8,6 +8,8 @@ public interface ParcareService {
 	
 	public List<Parcare> findAll();
 	
+	public Parcare findById(int id);
+	
 	public void saveParcare(Parcare parcare);
 	
 	public void updateParcare(Parcare parcare);

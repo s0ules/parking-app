@@ -1,88 +1,142 @@
-
-
-    body{
-    font-family: Nunito Sans;
-    background-color: #232e3f;
+body {
+	font-family: Nunito Sans;
+	background-color: #232e3f;
 }
 
-.container-fluid{
-    background-image: url(images/background-image.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
+.container-fluid {
+	background-image: url(images/background-image.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
-h1{
-    font-family: 'Arial';
-    text-align: center;
-    color: white
+h1 {
+	font-family: 'Arial';
+	text-align: center;
+	color: white
 }
 
-#logo{
-    margin: 40px 0;
+#logo {
+	margin: 40px 0;
 }
 
 .height-full {
-  height: 100vh;
+	height: 100vh;
 }
 
 .width-full {
-  width: 100%;
+	width: 100%;
 }
 
-
-.row{
-    margin: 0;
+.row {
+	margin: 0;
 }
 
-
-label{
-    margin: 15px 0;
-    padding: 0;
-    font-size: 24px;
-    color: #fff;
+label {
+	margin: 15px 0;
+	padding: 0;
+	font-size: 24px;
+	color: #fff;
 }
 
-.verical-space{
-    margin: auto 0px;
+.verical-space {
+	margin: auto 0px;
 }
 
-button{
-    font-size: 20px;
-    padding: 10px 20px;
-    color: #fff;
-    background-color: #2a518c;
-    border-radius: 10px;
-    margin: auto;
-    border: 0;
-    width: 100%;
+button {
+	font-size: 20px;
+	padding: 10px 20px;
+	color: #fff;
+	background-color: #2a518c;
+	border-radius: 10px;
+	margin: auto;
+	border: 0;
+	width: 100%;
 }
 
-.row{
-    padding: 0 60px;
+.row {
+	padding: 0 60px;
 }
 
-.map{
-    min-height: 70%;
-    background-color: cadetblue;
-    margin-top: 60px;
-    text-align: center;
+.map {
+	min-height: 70%;
+	background-color: cadetblue;
+	margin-top: 60px;
+	text-align: center;
 }
 
-input{
-    border-radius: 15px;
-    height: 40px;
+input {
+	border-radius: 15px;
 }
 
-.main{
-    min-height: 80%;
+.main {
+	min-height: 80%;
 }
 
-button{
-   margin: 20px;
+button {
+	margin: 20px;
 }
 
-.show{
-    background-color:#2a518c;
-    margin-left: 80px;
+.show {
+	background-color: #2a518c;
+	margin-left: 80px;
 }
 
+.wrapper {
+	filter: blur(2px);
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: .5;
+	z-index: 1;
+	display: none;
+}
+
+#makereservation {
+	display: flex;
+	flex-flow: column wrap;
+	z-index: 2;
+	background-color: gray;
+	width: 400px;
+	height: 500px;
+	display: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.rezervare {
+	display: flex;
+	flex-flow: column wrap;
+	align-items: left;
+	margin: 50px;
+
+}
+
+#availableHours {
+	background-color: #e6e6e6;
+	width: 100%;
+	height: 100%;
+}
+
+.item {
+	display: block;
+}
+
+label {
+	display: inline;
+}
+
+input[type=checkbox] {
+	display: inline;
+}

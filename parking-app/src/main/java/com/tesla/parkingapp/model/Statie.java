@@ -20,7 +20,7 @@ public class Statie {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id_statie;
+	int statieId;
 	
 	@ManyToOne
     @JoinColumn(name = "parcare_id")
@@ -33,12 +33,12 @@ public class Statie {
 		
 	}
 	
-	public int getId_statie() {
-		return id_statie;
+	public int getStatieId() {
+		return statieId;
 	}
 
-	public void setId_statie(int id_statie) {
-		this.id_statie = id_statie;
+	public void setStatieId(int id_statie) {
+		this.statieId = id_statie;
 	}
 
 	public Parcare getParcare() {

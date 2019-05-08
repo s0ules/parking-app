@@ -1,5 +1,7 @@
 package com.tesla.parkingapp.controller;
 
+import java.sql.Date;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,22 +10,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.maps.model.LatLng;
+import com.tesla.parkingapp.model.AvailableHour;
+import com.tesla.parkingapp.model.MyResponse;
 import com.tesla.parkingapp.model.Parcare;
 import com.tesla.parkingapp.model.Programare;
 import com.tesla.parkingapp.model.Statie;
 import com.tesla.parkingapp.model.User;
 import com.tesla.parkingapp.service.ParcareService;
+import com.tesla.parkingapp.service.ProgramareService;
 import com.tesla.parkingapp.service.StatieService;
 import com.tesla.parkingapp.service.UserService;
 import com.tesla.parkingapp.utils.Geolocation;
@@ -37,6 +50,8 @@ public class UserController {
 	private ParcareService parcareService;
 	@Autowired
 	private StatieService statieService;
+	@Autowired
+	private ProgramareService programareService;
 	@Autowired
 	private User user;
 
@@ -210,4 +225,17 @@ public class UserController {
 		return model;
 	}
 
+	@RequestMapping(value = "/getAvailableHours", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<LocalTime> getAvailableHours(@RequestBody AvailableHour avHour) {
+		System.out.println(avHour.getStatieId());
+		Statie statie = statieService.findByParcareId(avHour.getStatieId()).get(1);
+
+		List<Programare> lp = programareService.findByStatie_StatieId(statie.getStatieId());
+		System.out.println(lp.get(0).getOra_inceput().toString());
+		
+		List<LocalTime> dates= new ArrayList<>();
+		LocalTime t1 = LocalTime.of(8, 00);
+		dates.add(t1);
+		return dates;
+	}
 }

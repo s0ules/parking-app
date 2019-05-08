@@ -1,44 +1,122 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
- xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    
-    <!-- Fonts -->
-    
-    <!-- CSS File -->
-     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-   crossorigin=""/>
-    <link rel="stylesheet" href="css/user.css" type="text/css">
-    <title>ParkingApp</title>
- 
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+<!-- Fonts -->
+
+<!-- CSS File -->
+<link rel="stylesheet"
+	href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+	integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+	crossorigin="" />
+<link rel="stylesheet" href="css/user.css" type="text/css">
+<title>ParkingApp</title>
+
 </head>
 <body>
-    <div class="container-fluid  height-full">
-        <div id="logo" class="row d-flex justify-content-center">
-            <h1 class="col-xl-12">Tesla</h1>
-        </div>
-        <div class="container search height-full width-full">
-            <div id="map"class="row width-full main">
-                <!--  <div class="col-sm-12 col-xl-4 buttons">
+	<div id="wrap">
+		<div class="container-fluid  height-full">
+			<div id="logo" class="row d-flex justify-content-center">
+				<h1 class="col-xl-12">Tesla</h1>
+			</div>
+			<div class="container search height-full width-full">
+				<div id="map" class="row width-full main">
+					<!--  <div class="col-sm-12 col-xl-4 buttons">
                     <button>Reservations</button>
                     <button>Make reservation</button>
                     <th:block th:utext="${parcari[0].adresa}"/>
                 </div>
                 <div  class="col-sm-12 col-xl-7 show"></div>-->
 
-            </div>
-        </div>
-    </div>
-<!-- Optional JavaScript -->
- <script th:inline="javascript">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='overlay'></div>
 
+	<div id='makereservation'>
+		<div class='rezervare'>
+		
+			<div class="item">
+				<label>Data dorita:</label> <input type="date" id='data'>
+			</div>
+			<div class="item">
+				<label>Fast-charging:</label> <input type="checkbox"
+					id='fast-charging'>
+			</div>
+		</div>
+
+		<div id="availableHours"></div>
+	</div>
+
+
+	<!-- Optional JavaScript -->
+	<script th:inline="javascript">
+	  $(document).ready(function() {
+		  $("#data").on("change",function(){
+		        var selected = $(this).val();
+		        var json = {
+		         date : selected,
+		         statieId : $('.rezervare').attr('id')
+		        };
+				$.ajax({
+					type : "POST",
+					contentType : "application/json",
+					url : "/getAvailableHours",
+				    data : JSON.stringify(json),
+				    dataType : 'json',
+					success : function(result) {
+						$('#availableHours').append("<div>" + result + "</div>");
+						/*if (result.status == "success") {
+							 $('#availableHours').append("<div>" + result + "</div>");
+						} else {
+							$("#availableHours").html(
+									"<strong>Error</strong>");
+						}*/
+					},
+					error : function(e) {
+						alert("Error!")
+						console.log("ERROR: ", e);
+					}
+				});
+		    
+		    });
+	    });
+	
+	
+	$("body").on("click", ".rezerva", function(event){
+
+		$('#wrap').addClass("wrapper");
+		$('.overlay').css('display' , 'block');
+		$('#makereservation').css('display', 'block');
+		$('.rezervare').attr('id', event.target.id);
+	});
+
+	$(document).mouseup(function(e){
+	    var container = $("#makereservation");
+
+	    // If the target of the click isn't the container
+	    if(!container.is(e.target) && container.has(e.target).length === 0){
+	    	$('#wrap').removeClass("wrapper");
+			$('.overlay').css('display' , 'none');
+	        container.hide();
+	        $('#availableHours').html('');
+	    }
+	});
+	
+	
   // initialize the map
  // var map = L.map('map').setView([46.769605, 23.588730], 13);
 
@@ -68,11 +146,11 @@
            	  var nr_locuri = ListAdresses[i].nr_locuri;
            	  var lat = ListAdresses[i].latitudine;
            	  var lng = ListAdresses[i].longitudine;
-           	  var id = ListAdresses[i].id_parcare;
+           	  var id = ListAdresses[i].parcareId;
         	  var status = ListAdresses[i].status;
         	  var html = "CLOSED" + "<br>" + address + "<br>";
         	  if (status == 1)
-        	  	html = "locuri: " + nr_locuri + "<br>" + address + "<br>" + "<input type='submit' id='" + id + "' name='rezerva' value='Rezerva' /> ";
+        	  	html = "<div> locuri: " + nr_locuri + "<br>" + address + "<br>" + "<input class='rezerva' type='submit' id='" + id + "' name='rezerva' value='Rezerva' /> </div>";
         	  
         	  var marker = new google.maps.Marker({
                   map: resultsMap,
@@ -104,15 +182,21 @@
       }
 
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvoYpTH5xFcgsi8CW6Gh7eimOd6AoOIUY&callback=initMap">
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvoYpTH5xFcgsi8CW6Gh7eimOd6AoOIUY&callback=initMap">
     </script>
 
- <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-   crossorigin=""></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+		integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+		crossorigin=""></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+
 </body>
 </html>
