@@ -28,11 +28,6 @@
 	         <li>Logout</li>
            </ul>
         </div>
-		<div class="container row menu">
-			<ul>
-				<li>LogOut</li>
-			</ul>
-		</div>
 		<div id="logo" class="row d-flex justify-content-center">
 			<h1 class="col-xl-12">Tesla</h1>
 		</div>
@@ -83,11 +78,18 @@ function initMap() {
         	  var html = "<form class='width-full' th:action='@{/administrare-parcare}' th:object='${parcare}'  method='post'>" +
         	  	"<input type='hidden' name='parcareId' th:field='*{parcareId}' value='" + id + "'>" +
                   "<div class='row form-group verical-space'>" +
-                  "<input class='col-xl-12 col-md-12 form-control' type='text' id='name' name='adresa' th:field='*{adresa}' placeholder='Adress' value='" + address + "'>" +
+                  "<label class='col-xl-4 col-md-4' for='name'>Adresa: </label> <input class='col-xl-8 col-md-8 form-control' type='text' id='name' name='adresa' th:field='*{adresa}' placeholder='Adress' value='" + address + "'>" +
                 "</div>" +
                 "<div class='row form-group verical-space' style='float:left'>" +
-                  "<label for='nr_locuri'>locuri: </label> <input class=' form-control' type='number' id='nr_locuri' name='nr_locuri' th:field='*{nr_locuri}' placeholder='Number of spots' value='" + nr_locuri + "'>" + 
+                  "<label class='col-xl-4 col-md-4' for='nr_locuri'>Locuri: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='nr_locuri' name='nr_locuri' th:field='*{nr_locuri}' placeholder='Number of spots' value='" + nr_locuri + "'>" + 
                 "</div>" +
+                "<div class='row form-group verical-space' style='float:left'>" +
+                "<label class='col-xl-4 col-md-4' for='ora_deschidere'>Ora deschidere: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='ora_deschidere' name='ora_deschidere' th:field='*{nr_locuri}' placeholder='Ora deschidere' value='" + nr_locuri + "'>" + 
+                "<label class='col-xl-4 col-md-4' for='ora_inchidere'>Ora inchidere: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='ora_inchidere' name='ora_inchidere' th:field='*{nr_locuri}' placeholder='Ora inchidere' value='" + nr_locuri + "'>" +
+              	"</div>" +
+              	"<div class='row form-group verical-space' style='float:left'>" +
+                "<label class='col-xl-4 col-md-4' for='pret'>Pret: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='pret' name='pret' th:field='*{nr_locuri}' placeholder='Pret' value='" + nr_locuri + "'>" + 
+             	 "</div>" +
                 "<div class='row form-group verical-space'>" +
                 "<label class='switch'>" +
                 "<input id='remember' type='checkbox' checked>" +
@@ -95,7 +97,7 @@ function initMap() {
               	"</label><br><br>" +
                 "</div>" +
                 "<div class='row verical-space'>" +
-                  "<button type='submit' class='btn-style col-xl-4 add' name='add'>Add</button>" +
+                  "<button type='submit' class='btn-style col-xl-4 add' name='add'>Details</button>" +
                   "<button type='submit' class='btn-style col-xl-4 delete' name='delete'>Delete</button>" +
                   "<button type='submit' class='btn-style col-xl-4 update' name='update'>Update</button>" +
                 "</div>" +
