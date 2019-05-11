@@ -13,6 +13,7 @@ import javax.persistence.TemporalType;
 
 import java.util.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "programare")
@@ -23,12 +24,12 @@ public class Programare {
 	private int id_programare;
 	
 	@Column(name = "ora_inceput")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date ora_inceput;
+	//@Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime ora_inceput;
 	
 	@Column(name = "ora_sfarsit")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date ora_sfarsit;
+	//@Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime ora_sfarsit;
 	
 	@ManyToOne
     @JoinColumn(name = "statie_id")
@@ -38,7 +39,7 @@ public class Programare {
 		
 	}
 	
-	public Programare(Date ora_inceput,Date ora_sfarsit) {
+	public Programare(LocalDateTime ora_inceput,LocalDateTime ora_sfarsit) {
 		super();
 		this.ora_inceput = ora_inceput;
 		this.ora_sfarsit = ora_sfarsit;
@@ -52,19 +53,19 @@ public class Programare {
 		this.id_programare = id_programare;
 	}
 
-	public Date getOra_inceput() {
+	public LocalDateTime getOra_inceput() {
 		return ora_inceput;
 	}
 
-	public void setOra_inceput(Date ora_inceput) {
+	public void setOra_inceput(LocalDateTime ora_inceput) {
 		this.ora_inceput = ora_inceput;
 	}
 
-	public Date getOra_sfarsit() {
+	public LocalDateTime getOra_sfarsit() {
 		return ora_sfarsit;
 	}
 
-	public void setOra_sfarsit(Date ora_sfarsit) {
+	public void setOra_sfarsit(LocalDateTime ora_sfarsit) {
 		this.ora_sfarsit = ora_sfarsit;
 	}
 

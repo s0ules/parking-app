@@ -149,7 +149,7 @@ public class UserController {
 		return model;
 	}
 
-	@RequestMapping(value = { "/admin" }, method = RequestMethod.GET)
+/*	@RequestMapping(value = { "/admin" }, method = RequestMethod.GET)
 	public ModelAndView admin(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -158,9 +158,9 @@ public class UserController {
 		model.addObject("userName", user.getEmail());
 		model.setViewName("/admin");
 		return model;
-	}
+	}*/
 
-	@RequestMapping(value = "/administrare-parcare", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public ModelAndView administrareParcare() {
 		ModelAndView model = new ModelAndView();
 
@@ -181,12 +181,12 @@ public class UserController {
 			}
 		}
 
-		model.setViewName("/administrare-parcare");
+		model.setViewName("/admin");
 		return model;
 
 	}
 
-	@RequestMapping(value = "/administrare-parcare", params = "update", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin", params = "update", method = RequestMethod.POST)
 	public void adauga(@Valid Parcare parcare, BindingResult bindingResult, Model model) {
 
 		LatLng coord = Geolocation.getCoordinates(parcare.getAdresa() + ", Cluj-Napoca, RO");
@@ -212,7 +212,7 @@ public class UserController {
 		// return "redirect:/administrare-parcare";
 	}
 
-	@RequestMapping(value = "/administrare-parcare", params = "delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin", params = "delete", method = RequestMethod.POST)
 	public void delete(@Valid Parcare parcare, BindingResult bindingResult, Model model) {
 
 		parcareService.deleteParcare(parcare.getParcareId());
@@ -228,6 +228,7 @@ public class UserController {
 	}
 	
 	private List<LocalTime> getPossibleHours(Parcare p){
+		System.out.println(p.getAdresa());
 		List<LocalTime> dates= new ArrayList<>();
 		int start_hour = p.getOraDeschidere().getHour();
 		int end_hour = p.getOraInchidere().getHour();
@@ -239,15 +240,23 @@ public class UserController {
 	
 	@RequestMapping(value = "/getAvailableHours", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<LocalTime> getAvailableHours(@RequestBody AvailableHour avHour) {
-		System.out.println(avHour.getStatieId());
+
+		List<LocalTime> dates = getPossibleHours(parcareService.findById(avHour.getStatieId()));
+		
 		Statie statie = statieService.findByParcareId(avHour.getStatieId()).get(1);
 
 		List<Programare> lp = programareService.findByStatie_StatieId(statie.getStatieId());
-		System.out.println(lp.get(0).getOra_inceput().toString());
-		
-		List<LocalTime> dates= new ArrayList<>();
-		LocalTime t1 = LocalTime.of(8, 00);
-		dates.add(t1);
+
+		for (Programare prog : lp) {
+			int h1 = prog.getOra_inceput().getHour();
+			int h2 = prog.getOra_sfarsit().getHour();
+			if (h2 - h1 == 2) {
+				
+			}
+			dates.remove(LocalTime.of(prog.getOra_inceput().getHour(), 00));
+			dates.remove(LocalTime.of(prog.getOra_sfarsit().getHour(), 00));
+		}
+
 		return dates;
 	}
 	
