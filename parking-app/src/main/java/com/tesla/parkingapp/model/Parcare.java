@@ -1,5 +1,6 @@
 package com.tesla.parkingapp.model;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +41,12 @@ public class Parcare {
 	@Column(name = "longitudine")
 	private double longitudine;
 	
+	@Column(name = "oraDeschidere")
+	private LocalTime oraDeschidere;
+	
+	@Column(name = "oraInchidere")
+	private LocalTime oraInchidere;
+	
 /*	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "programare_parcare", joinColumns = @JoinColumn(name = "id_parcare"), inverseJoinColumns = @JoinColumn(name = "id_programare"))
 	private Set<Programare> programari;
@@ -52,10 +59,12 @@ public class Parcare {
 		
 	}
 	
-	public Parcare(int parcareId, int nr_locuri, String adresa, Boolean status, Double lat, Double lng) {
+	public Parcare(int parcareId, int nr_locuri, LocalTime oraDeschidere, LocalTime oraInchidere, String adresa, Boolean status, Double lat, Double lng) {
 		super();
 		this.parcareId = parcareId;
 		this.nr_locuri = nr_locuri;
+		this.oraDeschidere = oraDeschidere;
+		this.oraInchidere = oraInchidere;
 		this.adresa = adresa;
 		this.status = status;
 		this.latitudine = lat;
@@ -76,6 +85,22 @@ public class Parcare {
 
 	public void setNr_locuri(int nr_locuri) {
 		this.nr_locuri = nr_locuri;
+	}
+	
+	public LocalTime getOraDeschidere() {
+		return oraDeschidere;
+	}
+
+	public void setOraDeschidere(LocalTime oraDeschidere) {
+		this.oraDeschidere = oraDeschidere;
+	}
+
+	public LocalTime getOraInchidere() {
+		return oraInchidere;
+	}
+
+	public void setOraInchidere(LocalTime oraInchidere) {
+		this.oraInchidere = oraInchidere;
 	}
 
 	public String getAdresa() {

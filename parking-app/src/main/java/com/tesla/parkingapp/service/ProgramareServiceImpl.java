@@ -19,4 +19,9 @@ public class ProgramareServiceImpl implements ProgramareService{
 		return programareRepository.findByStatie_StatieId(id_statie);
 	}
 
+	@Override
+	public void saveProgramare(Programare programare) {
+		programareRepository.save(programare);
+	}
+
 }
