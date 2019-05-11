@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.maps.model.LatLng;
+import com.tesla.parkingapp.ParkingAppApplication;
 import com.tesla.parkingapp.model.AvailableHour;
 import com.tesla.parkingapp.model.MyResponse;
 import com.tesla.parkingapp.model.Parcare;
@@ -224,7 +226,17 @@ public class UserController {
 		model.setViewName("errors/access_denied");
 		return model;
 	}
-
+	
+	private List<LocalTime> getPossibleHours(Parcare p){
+		List<LocalTime> dates= new ArrayList<>();
+		int start_hour = p.getOraDeschidere().getHour();
+		int end_hour = p.getOraInchidere().getHour();
+		for (int i = start_hour; i < end_hour; i++) {
+			dates.add(LocalTime.of(i, 00));
+		}
+		return dates;
+	}
+	
 	@RequestMapping(value = "/getAvailableHours", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<LocalTime> getAvailableHours(@RequestBody AvailableHour avHour) {
 		System.out.println(avHour.getStatieId());
@@ -237,5 +249,9 @@ public class UserController {
 		LocalTime t1 = LocalTime.of(8, 00);
 		dates.add(t1);
 		return dates;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("da");
 	}
 }

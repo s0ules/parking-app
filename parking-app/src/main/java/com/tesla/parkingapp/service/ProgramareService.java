@@ -6,4 +6,6 @@ import com.tesla.parkingapp.model.Programare;
 
 public interface ProgramareService {
 	public List<Programare> findByStatie_StatieId(int id_statie);
+	
+	public void saveProgramare(Programare programare);
 }
