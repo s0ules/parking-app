@@ -57,6 +57,37 @@ h1{
     margin: auto;
 }
 
+.container-fluid{
+    padding: 0;
+}
+
+.header{
+    background-color:rgba(255,255,255,0.2);
+}
+
+.menu{
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    
+}
+
+.menu li{
+    list-style: none;
+    float: right;
+    padding: 0 20px;
+    color: white;
+    font-size: 18px;
+}
+
+.menu li:hover{
+    font-size: 20px;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-color: cadetblue;
+}
+
 label{
     margin: 0 5px 0 0;
     padding: 0;
