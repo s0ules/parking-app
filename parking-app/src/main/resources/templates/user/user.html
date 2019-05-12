@@ -55,7 +55,11 @@
 
 	<div id='makereservation'>
 		<div class='rezervare'>
-
+			<div>
+				<select id="preferinteStatie">
+					<option value="nopreferences">Fara preferinte</option>
+				</select>
+			</div>
 			<div class="item">
 				<label>Data dorita:</label> <input type="date" id='data'>
 			</div>
@@ -78,6 +82,7 @@
 	  $(document).ready(function() {
 		  $("#data").on("change",function(){
 		        var selected = $(this).val();
+		        console.log(selected);
 		        var json = {
 		         date : selected,
 		         parcareId : $('.rezervare').attr('id')
@@ -89,9 +94,11 @@
 				    data : JSON.stringify(json),
 				    dataType : 'json',
 					success : function(result) {
+						console.log(result);
 						var options = "";
-						for (var i = 0; i < result.hours.length; i++){
-							options += "<option id='" + result.statieId + "'value='" + result.hours[i] + "'>" + result.hours[i] + "</option>";
+						for (var i = 0; i < result.availableHoursNoPreference.length; i++){
+							options += "<option id='" + result.availableHoursNoPreference[i].id_statie + "'value='" + result.availableHoursNoPreference[i].hour + "'>"
+							+ result.availableHoursNoPreference[i].hour + "</option>";
 						}
 						$('#hours').html(options);
 						
@@ -140,6 +147,7 @@
 		$('.overlay').css('display' , 'block');
 		$('#makereservation').css('display', 'block');
 		$('.rezervare').attr('id', event.target.id);
+
 	});
 
 	$(document).mouseup(function(e){
