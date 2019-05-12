@@ -12,4 +12,5 @@ public interface StatieRepository extends JpaRepository<Statie, Integer>{
 
 	List<Statie> findByParcare_ParcareId(int id_parcare);
 	
+	Statie findById(int statie_id);
 }

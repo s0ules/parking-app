@@ -81,35 +81,34 @@ button {
 	margin-left: 80px;
 }
 
-.container-fluid{
-    padding: 0;
+.container-fluid {
+	padding: 0;
 }
 
-.header{
-    background-color:rgba(255,255,255,0.2);
+.header {
+	background-color: rgba(255, 255, 255, 0.2);
 }
 
-.menu{
-    height: 50px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    
+.menu {
+	height: 50px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
-.menu li{
-    list-style: none;
-    float: right;
-    padding: 0 20px;
-    color: white;
-    font-size: 18px;
+.menu li {
+	list-style: none;
+	float: right;
+	padding: 0 20px;
+	color: white;
+	font-size: 18px;
 }
 
-.menu li:hover{
-    font-size: 20px;
-    text-decoration: underline;
-    text-decoration-style: solid;
-    text-decoration-color: cadetblue;
+.menu li:hover {
+	font-size: 20px;
+	text-decoration: underline;
+	text-decoration-style: solid;
+	text-decoration-color: cadetblue;
 }
 
 .wrapper {
@@ -150,14 +149,11 @@ button {
 	display: flex;
 	flex-flow: column wrap;
 	align-items: left;
-	margin: 50px;
-
+	margin: 50px 50px 0px 50px;
 }
 
 #availableHours {
-	background-color: #e6e6e6;
-	width: 100%;
-	height: 100%;
+	
 }
 
 .item {
@@ -170,4 +166,29 @@ label {
 
 input[type=checkbox] {
 	display: inline;
+}
+
+.bloc {
+	display: inline-block;
+	vertical-align: top;
+	overflow: hidden;
+	border: solid grey 1px;
+	height: 500px;
+}
+
+.bloc select {
+	padding: 10px;
+	margin: -5px -20px -5px -5px;
+	width: 423px;
+	text-align: center;
+	height: 100%;
+	font-size: 18px;
+}
+
+#hours option {
+	padding-bottom: 5px;
+}
+
+#hours option:hover {
+	background-color: grey;
 }

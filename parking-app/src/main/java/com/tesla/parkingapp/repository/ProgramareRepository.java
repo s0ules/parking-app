@@ -9,5 +9,5 @@ import com.tesla.parkingapp.model.Programare;
 
 @Repository("programareRepository")
 public interface ProgramareRepository extends JpaRepository<Programare, Integer>{
-	List<Programare> findByStatie_StatieId(int id_statie);
+	List<Programare> findByStatie_StatieId(int statie_id);
 }

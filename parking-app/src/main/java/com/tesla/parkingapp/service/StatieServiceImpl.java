@@ -24,4 +24,9 @@ public class StatieServiceImpl implements StatieService{
 		return statieRepository.findByParcare_ParcareId(parcareId);
 	}
 
+	@Override
+	public Statie findById(int id) {
+		return statieRepository.findById(id);
+	}
+
 }

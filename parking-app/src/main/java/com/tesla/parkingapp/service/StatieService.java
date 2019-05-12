@@ -10,4 +10,5 @@ public interface StatieService {
 	
 	public void saveStatie(Statie statie);
 	
+	public Statie findById(int id);
 }

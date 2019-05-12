@@ -29,12 +29,12 @@
 	<div id="wrap">
 		<div class="container-fluid  height-full">
 			<div class="header">
-	                <ul class="menu container">
-	                    <li>Home</li>
-	                    <li>MyProfile</li>
-	                    <li>Logout</li>
-	                </ul>
-            </div>
+				<ul class="menu container">
+					<li>Home</li>
+					<li>MyProfile</li>
+					<li>Logout</li>
+				</ul>
+			</div>
 			<div id="logo" class="row d-flex justify-content-center">
 				<h1 class="col-xl-12">Tesla</h1>
 			</div>
@@ -55,7 +55,7 @@
 
 	<div id='makereservation'>
 		<div class='rezervare'>
-		
+
 			<div class="item">
 				<label>Data dorita:</label> <input type="date" id='data'>
 			</div>
@@ -66,7 +66,10 @@
 			<input type="submit" id="submitreservation" value="Rezerva">
 		</div>
 
-		<div id="availableHours"></div>
+		<div class="bloc" id="#availableHours">
+			<select size="24" id="hours">
+			</select>
+		</div>
 	</div>
 
 
@@ -77,7 +80,7 @@
 		        var selected = $(this).val();
 		        var json = {
 		         date : selected,
-		         statieId : $('.rezervare').attr('id')
+		         parcareId : $('.rezervare').attr('id')
 		        };
 				$.ajax({
 					type : "POST",
@@ -86,23 +89,50 @@
 				    data : JSON.stringify(json),
 				    dataType : 'json',
 					success : function(result) {
-						$('#availableHours').append("<div>" + result + "</div>");
-						/*if (result.status == "success") {
-							 $('#availableHours').append("<div>" + result + "</div>");
-						} else {
-							$("#availableHours").html(
-									"<strong>Error</strong>");
-						}*/
+						var options = "";
+						for (var i = 0; i < result.hours.length; i++){
+							options += "<option id='" + result.statieId + "'value='" + result.hours[i] + "'>" + result.hours[i] + "</option>";
+						}
+						$('#hours').html(options);
+						
 					},
 					error : function(e) {
 						alert("Error!")
 						console.log("ERROR: ", e);
 					}
 				});
-		    
 		    });
 	    });
 	
+	  $("body").on("click", "#submitreservation", function(event){
+	        var fast_charge = $("#fast-charging").is(":checked");
+	       
+	        var data = $("#data").val();
+	        var selectedHour = $('#hours').find(":selected").text();
+	        var json = {
+	         "fast_charger" : fast_charge,
+	         "date" : data,
+	         "ora_inceput" : selectedHour,
+	         "id_statie" : $('#hours').find(":selected").attr('id'),
+	         "user" : 0
+	        };
+			$.ajax({
+				type : "POST",
+				contentType : "application/json",
+				url : "/makeReservation",
+			    data : JSON.stringify(json),
+			    dataType : 'text',
+				success : function(result) {
+					alert(result);
+					
+				},
+				error : function(e) {
+					alert("Error!")
+					console.log("ERROR: ", e);
+				}
+			});
+		});
+	  
 	
 	$("body").on("click", ".rezerva", function(event){
 
@@ -120,7 +150,7 @@
 	    	$('#wrap').removeClass("wrapper");
 			$('.overlay').css('display' , 'none');
 	        container.hide();
-	        $('#availableHours').html('');
+	        $('#hours').html('');
 	    }
 	});
 	
@@ -205,6 +235,5 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 		crossorigin="anonymous"></script>
-
 </body>
 </html>
