@@ -216,6 +216,25 @@ public class UserController {
 		return model;
 	}
 
+	@RequestMapping(value = { "/user-reservations" }, method = RequestMethod.GET)
+	public ModelAndView userReservations(Authentication authentication) {
+		ModelAndView model = new ModelAndView();
+		User user = userService.findUserByEmail(authentication.getName());
+		List<Programare> progr = programareService.findByUser_UserId(user.getId());
+		List<Programare> rez = new ArrayList<>();
+		LocalDateTime currentDate = LocalDateTime.now();
+		for (Programare prog : progr) {
+			if (prog.getOra_inceput().isAfter(currentDate)) {
+				rez.add(new Programare(prog.getId_programare(), prog.getTip_incarcare(), prog.getOra_inceput(),
+						prog.getOra_sfarsit(), prog.getStatie().getParcare().getAdresa()));
+			}
+		}
+		if (user != null)
+			model.addObject("rezervari", rez);
+		model.setViewName("user/user-reservations");
+		return model;
+	}
+
 	@RequestMapping(value = { "/creare-parcare" }, method = RequestMethod.GET)
 	public ModelAndView creareParcare() {
 		ModelAndView model = new ModelAndView();
@@ -258,34 +277,37 @@ public class UserController {
 			}
 			availableHours.add(new AvailableHours(dates, statie.getStatieId()));
 		}
-		
-		return new HoursResponse(availableHours, getNoPreferenceHours(parcareService.findById(desiredHour.getParcareId()), availableHours));
+
+		return new HoursResponse(availableHours,
+				getNoPreferenceHours(parcareService.findById(desiredHour.getParcareId()), availableHours));
 	}
 
 	private List<StatieHour> getNoPreferenceHours(Parcare parcare, List<AvailableHours> avHours) {
 		List<StatieHour> hours = new ArrayList<>();
 		LocalTime oraDeschidere = parcare.getOraDeschidere();
 		LocalTime oraInchidere = parcare.getOraInchidere();
+		LocalTime currentTime = LocalTime.now();
 		while (oraDeschidere.isBefore(oraInchidere)) {
 			System.out.println(oraDeschidere);
 			for (AvailableHours avHour : avHours) {
-				if (avHour.getHours().contains(oraDeschidere)) {
+				if (avHour.getHours().contains(oraDeschidere) && oraDeschidere.isAfter(currentTime)) {
 					hours.add(new StatieHour(oraDeschidere, avHour.getStatieId()));
 					oraDeschidere = oraDeschidere.plusHours(1);
 					break;
 				}
 			}
+			oraDeschidere = oraDeschidere.plusHours(1);
 		}
 		return hours;
 	}
 
 	@RequestMapping(value = "/makeReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String makeReservation(@RequestBody ProgramareResponse data,
-			@SessionAttribute("user") String useremail) {
+			@SessionAttribute("user") User user) {
 
 		TipIncarcare tip_incarcare = tipIncarcareService.findById(data.getFast_charger());
 		Statie statie = statieService.findById(data.getId_statie());
-		User user = userService.findUserByEmail(useremail);
+
 		LocalDateTime ora_inceput = LocalDateTime.of(data.getDate(), data.getOra_inceput());
 		int ora_sf = data.getOra_inceput().getHour() + 1;
 		if (tip_incarcare.getTip_id() == 2)

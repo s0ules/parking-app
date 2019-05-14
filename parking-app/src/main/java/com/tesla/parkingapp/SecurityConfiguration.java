@@ -49,14 +49,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().maximumSessions(1);
 		http.sessionManagement().invalidSessionUrl("/login").sessionAuthenticationErrorUrl("/login");
 		
-		http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/login").permitAll().antMatchers("/signup")
-				.permitAll().antMatchers("/user").permitAll().antMatchers("/home").permitAll().antMatchers("/admin")
-				.hasAuthority("ADMIN_USER").antMatchers("/user").hasAnyAuthority("SITE_USER", "ADMIN_USER")
-				.antMatchers("/administrare-parcare").hasAuthority("ADMIN_USER").antMatchers("/home/**").permitAll()
-				.anyRequest().authenticated().and().csrf().disable().formLogin().loginPage("/login")
-				.failureUrl("/login?error=true").successHandler(customSuccessHandler).usernameParameter("email")
-				.passwordParameter("password").and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/").and().exceptionHandling().accessDeniedPage("/access_denied");
+		http.authorizeRequests().antMatchers("/").permitAll()
+		.antMatchers("/login").permitAll()
+		.antMatchers("/signup").permitAll()
+		.antMatchers("/home").permitAll()
+		.antMatchers("/admin").hasAuthority("ADMIN_USER")
+		.antMatchers("/user").hasAnyAuthority("SITE_USER", "ADMIN_USER")
+		.antMatchers("/user-reservations").hasAnyAuthority("SITE_USER", "ADMIN_USER")
+		.antMatchers("/administrare-parcare").hasAuthority("ADMIN_USER")
+		.antMatchers("/home/**").permitAll()
+		.anyRequest().authenticated().and().csrf().disable().formLogin().loginPage("/login")
+		.failureUrl("/login?error=true").successHandler(customSuccessHandler).usernameParameter("email")
+		.passwordParameter("password").and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+		.logoutSuccessUrl("/").and().exceptionHandling().accessDeniedPage("/access_denied");
 	}
 
 	@Override

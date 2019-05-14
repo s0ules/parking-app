@@ -50,6 +50,7 @@ public class Programare {
 	
 	private int id_statie;
 	private int id_user;
+	private String adresa;
 	
 	public Programare() {
 		
@@ -59,6 +60,15 @@ public class Programare {
 		super();
 		this.ora_inceput = ora_inceput;
 		this.ora_sfarsit = ora_sfarsit;
+	}
+	
+public Programare(int id, TipIncarcare tip_incarcare, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, String adresa) {
+		
+		this.id_programare = id;
+		this.tip_incarcare = tip_incarcare;
+		this.ora_inceput = ora_inceput;
+		this.ora_sfarsit = ora_sfarsit;
+		this.adresa = adresa;
 	}
 	
 	public Programare(TipIncarcare tip_incarcare, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, Statie statie, User user) {
@@ -144,6 +154,14 @@ public class Programare {
 
 	public void setId_user(int id_user) {
 		this.id_user = id_user;
+	}
+
+	public String getAdresa() {
+		return adresa;
+	}
+
+	public void setAdresa(String adresa) {
+		this.adresa = adresa;
 	}
 	
 	

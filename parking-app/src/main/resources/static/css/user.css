@@ -96,7 +96,7 @@ button {
 	align-items: center;
 }
 
-.menu input {
+.menu li {
 	list-style: none;
 	float: right;
 	padding: 0 20px;
@@ -104,7 +104,7 @@ button {
 	font-size: 18px;
 }
 
-.menu input:hover {
+.menu li:hover {
 	font-size: 20px;
 	text-decoration: underline;
 	text-decoration-style: solid;

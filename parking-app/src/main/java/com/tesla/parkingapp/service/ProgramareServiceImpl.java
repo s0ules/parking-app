@@ -24,4 +24,9 @@ public class ProgramareServiceImpl implements ProgramareService{
 		programareRepository.save(programare);
 	}
 
+	@Override
+	public List<Programare> findByUser_UserId(int user_id) {
+		return programareRepository.findByUser_Id(user_id);
+	}
+
 }

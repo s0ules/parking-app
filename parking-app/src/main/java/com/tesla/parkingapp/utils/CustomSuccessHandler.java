@@ -34,7 +34,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             throws IOException {
     	
     	User user = userService.findUserByEmail(authentication.getName());
-    	request.getSession().setAttribute("user", user.getEmail());
+    	request.getSession().setAttribute("user", user);
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {

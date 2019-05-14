@@ -6,7 +6,7 @@ import com.tesla.parkingapp.model.Statie;
 
 public interface StatieService {
 
-	 List<Statie> findByParcareId(int parcareId);
+	List<Statie> findByParcareId(int parcareId);
 	
 	public void saveStatie(Statie statie);
 	

@@ -31,7 +31,7 @@
 			<div class="header">
 				<ul class="menu container">
 					<li><a th:href="@{/home}">Home</a></li>
-					<li>MyProfile</li>
+					<li><a th:href="@{/user-reservations}">Rezervari</a></li>
 					<li><a th:href="@{/logout}">Logout</a></li>
 					
 				</ul>
@@ -141,7 +141,6 @@
 			});
 		});
 	  
-	
 	$("body").on("click", ".rezerva", function(event){
 
 		$('#wrap').addClass("wrapper");
