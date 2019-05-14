@@ -109,6 +109,8 @@ button {
 	text-decoration: underline;
 	text-decoration-style: solid;
 	text-decoration-color: cadetblue;
+	cursor: -webkit-grab; 
+    cursor: grab;
 }
 
 .wrapper {
