@@ -72,6 +72,10 @@ function initMap() {
           for (i = 0; i < ListAdresses.length; i++) {
               var address = ListAdresses[i].adresa;
            	  var nr_locuri = ListAdresses[i].nr_locuri;
+              var deschidere = ListAdresses[i].oraDeschidere;
+              var inchidere = ListAdresses[i].oraInchidere;
+              var pret = ListAdresses[i].pret;
+
            	  var lat = ListAdresses[i].latitudine;
            	  var lng = ListAdresses[i].longitudine;
            	  var id = ListAdresses[i].parcareId;
@@ -84,12 +88,12 @@ function initMap() {
                   "<label class='col-xl-4 col-md-4' for='nr_locuri'>Locuri: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='nr_locuri' name='nr_locuri' th:field='*{nr_locuri}' placeholder='Number of spots' value='" + nr_locuri + "'>" + 
                 "</div>" +
                 "<div class='row form-group verical-space' style='float:left'>" +
-                "<label class='col-xl-4 col-md-4' for='ora_deschidere'>Ora deschidere: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='ora_deschidere' name='ora_deschidere' th:field='*{nr_locuri}' placeholder='Ora deschidere' value='" + nr_locuri + "'></div>" + 
+                "<label class='col-xl-4 col-md-4' for='ora_deschidere'>Ora deschidere: </label> <input class='col-xl-8 col-md-8 form-control' type='time' id='oraDeschidere' name='oraDeschidere' th:field='*{oraDeschidere}' placeholder='Ora deschidere' value='" + deschidere + "'></div>" + 
                 "<div class='row form-group verical-space' style='float:left'>" +
-                "<label class='col-xl-4 col-md-4' for='ora_inchidere'>Ora inchidere: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='ora_inchidere' name='ora_inchidere' th:field='*{nr_locuri}' placeholder='Ora inchidere' value='" + nr_locuri + "'>" +
+                "<label class='col-xl-4 col-md-4' for='ora_inchidere'>Ora inchidere: </label> <input class='col-xl-8 col-md-8 form-control' type='time' id='oraInchidere' name='oraInchidere' th:field='*{oraInchidere}' placeholder='Ora inchidere' value='" + inchidere + "'>" +
               	"</div>" +
               	"<div class='row form-group verical-space' style='float:left'>" +
-                "<label class='col-xl-4 col-md-4' for='pret'>Pret: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='pret' name='pret' th:field='*{nr_locuri}' placeholder='Pret' value='" + nr_locuri + "'>" + 
+                "<label class='col-xl-4 col-md-4' for='pret'>Pret: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='pret' name='pret' th:field='*{pret}' placeholder='Pret' value='" + pret + "'>" + 
              	 "</div>" +
                 "<div class='row form-group verical-space'>" +
                 "<label class='switch'>" +
