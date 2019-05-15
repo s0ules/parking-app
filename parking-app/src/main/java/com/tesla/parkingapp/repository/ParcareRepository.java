@@ -12,5 +12,8 @@ public interface ParcareRepository extends JpaRepository<Parcare, Integer>{
 	
 	 List<Parcare> findAll();
 	
+	 //List<Parcare> findByUser_Id(int )
+	 
 	 Parcare findById(int parcare_id);
+	 
 }

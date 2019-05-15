@@ -21,8 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 @Entity
 @Table(name = "auth_user")
-@Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class User {
 
 	@Id
@@ -31,7 +29,7 @@ public class User {
 	private int id;
 
 	@Column(name = "first_name")
-	private String name;
+	private String firstName;
 
 	@Column(name = "last_name")
 	private String lastName;
@@ -60,12 +58,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String name) {
+		this.firstName = name;
 	}
 
 	public String getLastName() {

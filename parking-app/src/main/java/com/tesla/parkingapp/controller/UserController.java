@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -69,89 +71,6 @@ public class UserController {
 	private StatieService statieService;
 	@Autowired
 	private ProgramareService programareService;
-	@Autowired
-	private User user;
-
-	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
-	public ModelAndView login() {
-		ModelAndView model = new ModelAndView();
-
-		model.setViewName("user/login");
-		return model;
-	}
-
-	@RequestMapping(value = { "/signup" }, method = RequestMethod.GET)
-	public ModelAndView signup() {
-		ModelAndView model = new ModelAndView();
-		User user = new User();
-		model.addObject("user", user);
-		model.setViewName("user/signup");
-
-		return model;
-	}
-
-	@RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
-	public ModelAndView createUser(@Valid User user, BindingResult bindingResult) {
-		ModelAndView model = new ModelAndView();
-		User userExists = userService.findUserByEmail(user.getEmail());
-
-		if (userExists != null) {
-			bindingResult.rejectValue("email", "error.user", "This email already exists!");
-		}
-		if (bindingResult.hasErrors()) {
-			model.setViewName("user/signup");
-		} else {
-			userService.saveUser(user);
-			model.addObject("msg", "User has been registered successfully!");
-			model.addObject("user", new User());
-			model.setViewName("user/signup");
-		}
-
-		return model;
-	}
-
-	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
-	public ModelAndView home(HttpServletRequest request) {
-		ModelAndView model = new ModelAndView();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
-		if (user != null) {
-			Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-
-			List<String> roles = new ArrayList<String>();
-
-			for (GrantedAuthority a : authorities) {
-				roles.add(a.getAuthority());
-			}
-			if (isAdmin(roles)) {
-				model.addObject("parcare", new Parcare());
-				model.addObject("parcari", parcareService.findAll());
-				model.setViewName("/admin");
-			} else if (isUser(roles)) {
-				model.addObject("parcari", parcareService.findAll());
-				model.setViewName("/user");
-			}
-		} else {
-			model.setViewName("user/login");
-		}
-
-		return model;
-
-	}
-
-	private boolean isUser(List<String> roles) {
-		if (roles.contains("SITE_USER")) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean isAdmin(List<String> roles) {
-		if (roles.contains("ADMIN_USER")) {
-			return true;
-		}
-		return false;
-	}
 
 	@RequestMapping(value = { "/user" }, method = RequestMethod.GET)
 	public ModelAndView user() {
@@ -162,53 +81,7 @@ public class UserController {
 
 		return model;
 	}
-
-	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public ModelAndView administrareParcare() {
-		ModelAndView model = new ModelAndView();
-
-		model.addObject("parcare", new Parcare());
-		model.addObject("parcari", parcareService.findAll());
-		model.setViewName("/admin");
-
-		return model;
-
-	}
-
-	@RequestMapping(value = "/admin", params = "update", method = RequestMethod.POST)
-	public void adauga(@Valid Parcare parcare, BindingResult bindingResult, Model model) {
-
-		LatLng coord = Geolocation.getCoordinates(parcare.getAdresa() + ", Cluj-Napoca, RO");
-		parcare.setStatus(true);
-		parcare.setLatitudine(coord.lat);
-		parcare.setLongitudine(coord.lng);
-
-		int locuri = parcare.getNr_locuri();
-
-		for (int i = 0; i < locuri; i++) {
-			Statie statie = new Statie();
-			statie.setParcare(parcare);
-			statieService.saveStatie(statie);
-			// parcare.addStatie(statie);
-		}
-
-		parcareService.updateParcare(parcare);
-
-		model.addAttribute("parcare", new Parcare());
-
-		model.addAttribute("parcari", parcareService.findAll());
-
-		// return "redirect:/administrare-parcare";
-	}
-
-	@RequestMapping(value = "/admin", params = "delete", method = RequestMethod.POST)
-	public void delete(@Valid Parcare parcare, BindingResult bindingResult, Model model) {
-
-		parcareService.deleteParcare(parcare.getParcareId());
-		model.addAttribute("parcari", parcareService.findAll());
-		// return "redirect:/administrare-parcare";
-	}
-
+	
 	@RequestMapping(value = { "/access_denied" }, method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
 		ModelAndView model = new ModelAndView();
@@ -232,13 +105,6 @@ public class UserController {
 		if (user != null)
 			model.addObject("rezervari", rez);
 		model.setViewName("user/user-reservations");
-		return model;
-	}
-
-	@RequestMapping(value = { "/creare-parcare" }, method = RequestMethod.GET)
-	public ModelAndView creareParcare() {
-		ModelAndView model = new ModelAndView();
-		model.setViewName("/creare-parcare");
 		return model;
 	}
 
@@ -300,7 +166,7 @@ public class UserController {
 		}
 		return hours;
 	}
-
+	
 	@RequestMapping(value = "/makeReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String makeReservation(@RequestBody ProgramareResponse data,
 			@SessionAttribute("user") User user) {
@@ -345,7 +211,4 @@ public class UserController {
 		return statiiOcupate;
 	}
 
-	public static void main(String[] args) {
-
-	}
 }

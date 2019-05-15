@@ -45,7 +45,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
- 
     protected String determineTargetUrl(Authentication authentication) {
     	
         String url = "";
@@ -61,7 +60,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             url = "/admin";
         } else if (isUser(roles)) {
             url = "/user";
-        } else {
+        } else if (isFirma(roles)){
+        	url = "/firma";
+        }
+        	else {
             url = "/accessDenied";
         }
 
@@ -82,8 +84,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         return false;
     }
 
-    private boolean isDba(List<String> roles) {
-        if (roles.contains("ROLE_DBA")) {
+    private boolean isFirma(List<String> roles) {
+        if (roles.contains("FIRMA_USER")) {
             return true;
         }
         return false;
@@ -96,5 +98,4 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     protected RedirectStrategy getRedirectStrategy() {
         return redirectStrategy;
     }
-
 }
