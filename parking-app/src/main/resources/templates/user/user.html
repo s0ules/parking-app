@@ -81,6 +81,7 @@
 	<!-- Optional JavaScript -->
 	<script th:inline="javascript">
 	  $(document).ready(function() {
+          
 		  $("#data").on("change",function(){
 		        var selected = $(this).val();
 		        console.log(selected);
@@ -147,6 +148,19 @@
 		$('.overlay').css('display' , 'block');
 		$('#makereservation').css('display', 'block');
 		$('.rezervare').attr('id', event.target.id);
+        
+                       var dtToday = new Date();
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+
+    $('#data').attr('min', maxDate);
 
 	});
 
@@ -159,6 +173,8 @@
 			$('.overlay').css('display' , 'none');
 	        container.hide();
 	        $('#hours').html('');
+            
+
 	    }
 	});
 	

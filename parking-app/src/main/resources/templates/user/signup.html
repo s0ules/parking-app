@@ -30,7 +30,7 @@
 					<div class="row form-group verical-space"
 						th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
 						<input class="col-xl-12 col-md-12 form-control" type="text"
-							id="firstName" name="firstName" placeholder="First Name">
+							id="firstName" name="firstName" th:field="*{firstName}" placeholder="First Name">
 						<p class="error-message"
 							th:each="error: ${#fields.errors('firstName')}"
 							th:text="${error}">Validation error</p>

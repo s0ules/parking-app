@@ -121,7 +121,6 @@ public class UserController {
 
 	@RequestMapping(value = "/getAvailableHours", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody HoursResponse getAvailableHours(@RequestBody DesiredReservationHour desiredHour) {
-
 		List<AvailableHours> availableHours = new ArrayList<>();
 		List<Statie> statii = statieService.findByParcareId(desiredHour.getParcareId());
 		for (Statie statie : statii) {
@@ -161,8 +160,8 @@ public class UserController {
 					oraDeschidere = oraDeschidere.plusHours(1);
 					break;
 				}
+				oraDeschidere = oraDeschidere.plusHours(1);
 			}
-			oraDeschidere = oraDeschidere.plusHours(1);
 		}
 		return hours;
 	}
