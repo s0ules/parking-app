@@ -21,7 +21,7 @@ h1{
 }
 
 .height-full {
-  height: 100vh;
+ 	
 }
 
 .width-full {
@@ -46,7 +46,7 @@ h1{
     background-color: #2a518c;
     opacity: 0.95;
     width: 80%;
-    height: 80%;
+    height:80%;
     margin: auto;
 }
 
@@ -84,6 +84,11 @@ label{
     font-size: 30px;
 }
 
+input[type="checkbox"] {
+	width:5px;
+
+}
+
 form{
     margin: 5% 0;
     display: flex;
@@ -110,4 +115,17 @@ form .row{
     .row{
         padding: 0;
     }
+}
+
+h1 {
+    color: #78ab46!important;
+}
+
+.error-message {
+    color: #a94442!important;
+    text-align: left!important;
+}
+
+.error-message:first-letter {
+    text-transform: capitalize!important;
 }
