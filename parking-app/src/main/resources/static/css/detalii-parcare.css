@@ -48,6 +48,10 @@ h1{
     margin: auto;
 }
 
+form .row{
+	padding: 8px!important;
+}
+
 label{
     margin: 0;
     padding: 0;
@@ -75,35 +79,7 @@ label{
 
 .container{
     width: 100%;
-}
-
-.header{
-    background-color:rgba(255,255,255,0.2);
-}
-
-.menu{
-    height: 50px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    
-}
-
-.menu li{
-    list-style: none;
-    float: right;
-    padding: 0 20px;
-    color: white;
-    font-size: 18px;
-}
-
-.menu li:hover{
-    font-size: 20px;
-    text-decoration: underline;
-    text-decoration-style: solid;
-    text-decoration-color: cadetblue;
-    cursor: -webkit-grab; 
-    cursor: grab;
+    max-width: 1400px!important;
 }
 
 h2{
@@ -140,9 +116,13 @@ h2{
 
 .aside{
     margin-bottom: 50px;
-    min-height: 300px;
+    min-height: 500px;
 }
 
+#admin{
+	min-height: 200px;
+	margin-bottom: 0px;
+}
 #caracteristici h2{
     padding-bottom: 53px;
 }
@@ -152,7 +132,27 @@ h2{
     justify-content: center;
 }
 
-.btn{
-    width: 30%;
-    margin-bottom: 40px;
+.toggle-handle{
+	padding: 15px!important;
+}
+form .buttons{
+	margin-top: 40px;
+}
+
+.update{
+    background-color: deepskyblue;
+}
+.add{
+    background-color: #66ff33;
+}
+.delete{
+    background-color: red;
+}
+
+.update:hover{
+   
+}
+
+.delete:hover{
+    background-color: #ce1212;
 }

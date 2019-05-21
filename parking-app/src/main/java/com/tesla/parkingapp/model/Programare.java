@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 
 import com.tesla.parkingapp.service.StatieService;
 import com.tesla.parkingapp.service.StatieServiceImpl;
@@ -48,6 +49,10 @@ public class Programare {
     @JoinColumn(name = "statie_id")
     private Statie statie;
 	
+	@NotBlank
+	@Column(name = "nr_inmatriculare")
+	private String nr_inmatriculare;
+	
 	private int id_statie;
 	private int id_user;
 	private String adresa;
@@ -62,25 +67,27 @@ public class Programare {
 		this.ora_sfarsit = ora_sfarsit;
 	}
 	
-public Programare(int id, TipIncarcare tip_incarcare, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, String adresa) {
+public Programare(int id, TipIncarcare tip_incarcare, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, String adresa, String nr_inmatriculare) {
 		
 		this.id_programare = id;
 		this.tip_incarcare = tip_incarcare;
 		this.ora_inceput = ora_inceput;
 		this.ora_sfarsit = ora_sfarsit;
 		this.adresa = adresa;
+		this.nr_inmatriculare = nr_inmatriculare;
 	}
 	
-	public Programare(TipIncarcare tip_incarcare, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, Statie statie, User user) {
+	public Programare(TipIncarcare tip_incarcare, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, Statie statie, User user, String nr_inmatriculare) {
 		
 		this.tip_incarcare = tip_incarcare;
 		this.ora_inceput = ora_inceput;
 		this.ora_sfarsit = ora_sfarsit;
 		this.statie = statie;
 		this.user = user;
+		this.nr_inmatriculare = nr_inmatriculare;
 	}
 	
-	public Programare(Boolean fast, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, int statie, int user) {
+	public Programare(Boolean fast, LocalDateTime ora_inceput, LocalDateTime ora_sfarsit, int statie, int user, String nr_inmatriculare) {
 		TipIncarcareService ts = new TipIncarcareServiceImpl();
 		int id = 1;
 		if (fast)
@@ -90,6 +97,7 @@ public Programare(int id, TipIncarcare tip_incarcare, LocalDateTime ora_inceput,
 		this.ora_sfarsit = ora_sfarsit;
 		this.id_statie = statie;
 		this.id_user = user;
+		this.nr_inmatriculare = nr_inmatriculare;
 	}
 
 	public int getId_programare() {
@@ -163,6 +171,15 @@ public Programare(int id, TipIncarcare tip_incarcare, LocalDateTime ora_inceput,
 	public void setAdresa(String adresa) {
 		this.adresa = adresa;
 	}
+
+	public String getNr_inmatriculare() {
+		return nr_inmatriculare;
+	}
+
+	public void setNr_inmatriculare(String nr_inmatriculare) {
+		this.nr_inmatriculare = nr_inmatriculare;
+	}
+	
 	
 	
 	

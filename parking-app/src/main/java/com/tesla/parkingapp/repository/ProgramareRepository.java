@@ -13,4 +13,5 @@ public interface ProgramareRepository extends JpaRepository<Programare, Integer>
 	List<Programare> findByStatie_StatieId(int statie_id);
 	
 	List<Programare> findByUser_Id(int user_id);
+	
 }

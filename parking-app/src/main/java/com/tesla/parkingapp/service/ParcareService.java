@@ -10,6 +10,10 @@ public interface ParcareService {
 	
 	public Parcare findById(int id);
 	
+	public List<Parcare> findByLatitudineAndLongitudine(double latitudine, double longitudine);
+	
+	public List<Parcare> findByUser_UserId(int user_id);
+	
 	public void saveParcare(Parcare parcare);
 	
 	public void updateParcare(Parcare parcare);

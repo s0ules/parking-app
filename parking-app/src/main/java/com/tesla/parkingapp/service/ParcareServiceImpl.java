@@ -38,4 +38,14 @@ public class ParcareServiceImpl implements ParcareService{
 	public Parcare findById(int id) {
 		return parcareRepository.findById(id);
 	}
+
+	@Override
+	public List<Parcare> findByLatitudineAndLongitudine(double latitudine, double longitudine) {
+		return parcareRepository.findByLatitudineAndLongitudine(latitudine, longitudine);
+	}
+
+	@Override
+	public List<Parcare> findByUser_UserId(int user_id) {
+		return parcareRepository.findByUser_Id(user_id);
+	}
 }

@@ -39,7 +39,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.maps.model.LatLng;
 import com.tesla.parkingapp.ParkingAppApplication;
-import com.tesla.parkingapp.model.AvailableHours;
+import com.tesla.parkingapp.model.AvailableHoursStatie;
 import com.tesla.parkingapp.model.DesiredReservationHour;
 import com.tesla.parkingapp.model.HoursResponse;
 import com.tesla.parkingapp.model.MyResponse;
@@ -81,7 +81,7 @@ public class UserController {
 
 		return model;
 	}
-	
+
 	@RequestMapping(value = { "/access_denied" }, method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
 		ModelAndView model = new ModelAndView();
@@ -99,7 +99,7 @@ public class UserController {
 		for (Programare prog : progr) {
 			if (prog.getOra_inceput().isAfter(currentDate)) {
 				rez.add(new Programare(prog.getId_programare(), prog.getTip_incarcare(), prog.getOra_inceput(),
-						prog.getOra_sfarsit(), prog.getStatie().getParcare().getAdresa()));
+						prog.getOra_sfarsit(), prog.getStatie().getParcare().getAdresa(), prog.getNr_inmatriculare()));
 			}
 		}
 		if (user != null)
@@ -121,7 +121,7 @@ public class UserController {
 
 	@RequestMapping(value = "/getAvailableHours", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody HoursResponse getAvailableHours(@RequestBody DesiredReservationHour desiredHour) {
-		List<AvailableHours> availableHours = new ArrayList<>();
+		List<AvailableHoursStatie> availableHours = new ArrayList<>();
 		List<Statie> statii = statieService.findByParcareId(desiredHour.getParcareId());
 		for (Statie statie : statii) {
 			List<LocalTime> dates = getPossibleHours(parcareService.findById(desiredHour.getParcareId()));
@@ -136,78 +136,92 @@ public class UserController {
 					if (h2 - h1 == 2) {
 						dates.remove(LocalTime.of(h1 + 1, 00));
 					}
-					dates.remove(LocalTime.of(prog.getOra_inceput().getHour(), 00));
-					dates.remove(LocalTime.of(prog.getOra_sfarsit().getHour(), 00));
+					dates.remove(LocalTime.of(h1, 00));
+					// dates.remove(LocalTime.of(prog.getOra_sfarsit().getHour(), 00));
 				}
 			}
-			availableHours.add(new AvailableHours(dates, statie.getStatieId()));
+			availableHours.add(new AvailableHoursStatie(dates, statie.getStatieId()));
 		}
-
-		return new HoursResponse(availableHours,
-				getNoPreferenceHours(parcareService.findById(desiredHour.getParcareId()), availableHours));
+		
+		if (desiredHour.isFast_charger())
+			return new HoursResponse(availableHours, getHoursFastCharging(
+				parcareService.findById(desiredHour.getParcareId()), availableHours, desiredHour.getDate()));
+		else
+			return new HoursResponse(availableHours, getNoPreferenceHours(
+					parcareService.findById(desiredHour.getParcareId()), availableHours, desiredHour.getDate()));
 	}
 
-	private List<StatieHour> getNoPreferenceHours(Parcare parcare, List<AvailableHours> avHours) {
+	private List<StatieHour> getNoPreferenceHours(Parcare parcare, List<AvailableHoursStatie> avHoursStatii,
+			LocalDate desiredDate) {
 		List<StatieHour> hours = new ArrayList<>();
-		LocalTime oraDeschidere = parcare.getOraDeschidere();
 		LocalTime oraInchidere = parcare.getOraInchidere();
 		LocalTime currentTime = LocalTime.now();
-		while (oraDeschidere.isBefore(oraInchidere)) {
-			System.out.println(oraDeschidere);
-			for (AvailableHours avHour : avHours) {
-				if (avHour.getHours().contains(oraDeschidere) && oraDeschidere.isAfter(currentTime)) {
-					hours.add(new StatieHour(oraDeschidere, avHour.getStatieId()));
-					oraDeschidere = oraDeschidere.plusHours(1);
-					break;
+		LocalDate currentDate = LocalDate.now();
+		LocalTime possibleHour = parcare.getOraDeschidere();
+		if (currentDate.isEqual(desiredDate))
+			possibleHour = LocalTime.of(currentTime.plusHours(1).getHour(), 00);
+
+		for (AvailableHoursStatie avHoursStatie : avHoursStatii) {
+			for (LocalTime AvHourStatie : avHoursStatie.getHours()) {
+				if (possibleHour.isAfter(oraInchidere.minusHours(1))) {
+					return hours;
 				}
-				oraDeschidere = oraDeschidere.plusHours(1);
+				if (AvHourStatie.equals(possibleHour)) {
+					hours.add(new StatieHour(possibleHour, avHoursStatie.getStatieId()));
+					possibleHour = possibleHour.plusHours(1);
+				}
 			}
 		}
+
 		return hours;
 	}
 	
-	@RequestMapping(value = "/makeReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody String makeReservation(@RequestBody ProgramareResponse data,
-			@SessionAttribute("user") User user) {
+	private List<StatieHour> getHoursFastCharging(Parcare parcare, List<AvailableHoursStatie> avHoursStatii,
+			LocalDate desiredDate) {
+		List<StatieHour> hours = new ArrayList<>();
+		LocalTime oraInchidere = parcare.getOraInchidere();
+		LocalTime currentTime = LocalTime.now();
+		LocalDate currentDate = LocalDate.now();
+		LocalTime possibleHour = parcare.getOraDeschidere();
+		if (currentDate.isEqual(desiredDate))
+			possibleHour = LocalTime.of(currentTime.plusHours(1).getHour(), 00);
 
-		TipIncarcare tip_incarcare = tipIncarcareService.findById(data.getFast_charger());
+		for (AvailableHoursStatie avHoursStatie : avHoursStatii) {
+			for (LocalTime AvHourStatie : avHoursStatie.getHours()) {
+				if (possibleHour.isAfter(oraInchidere.minusHours(1))) {
+					return hours;
+				}
+				if (AvHourStatie.equals(possibleHour) && avHoursStatie.getHours().contains(possibleHour.plusHours(1))) {
+					hours.add(new StatieHour(possibleHour, avHoursStatie.getStatieId()));
+					possibleHour = possibleHour.plusHours(1);
+				}
+			}
+		}
+
+		return hours;
+	}
+
+	@RequestMapping(value = "/makeReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody int makeReservation(@RequestBody ProgramareResponse data,
+			Authentication authentication) {
+		User user = userService.findUserByEmail(authentication.getName());
+		int id_tip = 1;
+		if (data.getFast_charger())
+			id_tip = 2;
+		TipIncarcare tip_incarcare = tipIncarcareService.findById(id_tip);
 		Statie statie = statieService.findById(data.getId_statie());
 
 		LocalDateTime ora_inceput = LocalDateTime.of(data.getDate(), data.getOra_inceput());
 		int ora_sf = data.getOra_inceput().getHour() + 1;
-		if (tip_incarcare.getTip_id() == 2)
+		if (tip_incarcare.getTip_id() == 1)
 			ora_sf = data.getOra_inceput().getHour() + 2;
 		LocalTime sf_time = LocalTime.of(ora_sf, 00);
 		LocalDateTime ora_sfarsit = LocalDateTime.of(data.getDate(), sf_time);
-		Programare programare = new Programare(tip_incarcare, ora_inceput, ora_sfarsit, statie, user);
+		Programare programare = new Programare(tip_incarcare, ora_inceput, ora_sfarsit, statie, user, data.getNr_inmatriculare());
 
 		programareService.saveProgramare(programare);
 
-		return "success";
-	}
-
-	public List<Statie> returnareStatiiOcupate(Parcare parcare) {
-		List<Statie> statiiOcupate = new ArrayList<Statie>();
-		int oraIncepere = LocalTime.now().getHour();
-		int ziCurenta = LocalDate.now().getDayOfMonth();
-		int lunaCurenta = LocalDate.now().getMonthValue();
-		int anCurent = LocalDate.now().getYear();
-
-		List<Statie> statii = statieService.findByParcareId(parcare.getParcareId());
-		for (Statie statie : statii) {
-			List<Programare> programari = statie.getProgramari();
-			for (Programare programare : programari) {
-				if (programare.getOra_inceput().getDayOfMonth() == ziCurenta
-						&& programare.getOra_inceput().getMonthValue() == lunaCurenta
-						&& programare.getOra_inceput().getYear() == anCurent
-						&& programare.getOra_inceput().getHour() == oraIncepere
-						&& parcare.getParcareId() == programare.getStatie().getParcare().getParcareId()) {
-					statiiOcupate.add(programare.getStatie());
-				}
-			}
-		}
-
-		return statiiOcupate;
+		return data.getId_statie();
 	}
 
 }

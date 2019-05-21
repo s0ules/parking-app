@@ -3,33 +3,14 @@
 	xmlns:th="http://www.thymeleaf.org">
 	
 <head>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-	crossorigin="anonymous">
-
-<!-- Fonts -->
-
+<div th:replace="header :: header-css"></div>
 <!-- CSS File -->
 <link rel="stylesheet" href="css/user-reservations.css" type="text/css">
 <title>ParkingApp</title>
 </head>
 <body>
 	<div class="container-fluid height-full">
-		<div class="header">
-			<ul class="menu container">
-				<li>Home</li>
-				<li>Logout</li>
-			</ul>
-		</div>
+		<div th:replace="header :: header"></div>
 		<div id="logo" class="row d-flex justify-content-center">
 			<h1 class="col-xl-12">Tesla</h1>
 		</div>
@@ -52,6 +33,7 @@
 		  for (var i = 0; i < rezervari.length; i++){
 			  rez += "<li class='row width-full reservation'><span "+
 				"class='col-xl-12 col-md-12'>" + rezervari[i].adresa +"</span> <span "+
+				"class='col-xl-12 col-md-12'>" + rezervari[i].nr_inmatriculare +"</span> <span "+
 				"class='col-xl-6 col-md-6'>" + rezervari[i].ora_inceput + "</span> <span "+
 				"class='col-xl-6 col-md-6'>" + rezervari[i].ora_sfarsit + "</span></li>";
 		  }

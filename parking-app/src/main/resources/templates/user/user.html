@@ -2,21 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-	crossorigin="anonymous">
-
-<!-- Fonts -->
-
-<!-- CSS File -->
+<div th:replace="header :: header-css"></div>
 <link rel="stylesheet"
 	href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
 	integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
@@ -28,14 +14,7 @@
 <body>
 	<div id="wrap">
 		<div class="container-fluid  height-full">
-			<div class="header">
-				<ul class="menu container">
-					<li><a th:href="@{/home}">Home</a></li>
-					<li><a th:href="@{/user-reservations}">Rezervari</a></li>
-					<li><a th:href="@{/logout}">Logout</a></li>
-					
-				</ul>
-			</div>
+			<div th:replace="header :: header"></div>
 			<div id="logo" class="row d-flex justify-content-center">
 				<h1 class="col-xl-12">Tesla</h1>
 			</div>
@@ -56,24 +35,30 @@
 
 	<div id='makereservation'>
 		<div class='rezervare'>
-			<div>
-				<select id="preferinteStatie">
-					<option value="nopreferences">Fara preferinte</option>
-				</select>
+			<div class="item">
+
+				<label>Data dorita:</label> <input type="date" class="form-control"
+					id='data'>
 			</div>
 			<div class="item">
-				<label>Data dorita:</label> <input type="date" id='data'>
+				<label>Nr.inmatriculare:</label> <input class="form-control"
+					type="text" id='nr_inmatriculare'>
 			</div>
 			<div class="item">
-				<label>Fast-charging:</label> <input type="checkbox"
-					id='fast-charging'>
+			<div class="form-check-inline">
+  				<label class="form-check-label">Fast charging:</label>
+    			<input type="checkbox"  id='fast-charging' class="form-check-input" value="">
+  				
 			</div>
-			<input type="submit" id="submitreservation" value="Rezerva">
+			
+			</div>
+			<input type="submit" id="submitreservation"
+				class="btn btn-primary btn-sm" value="Rezerva">
 		</div>
 
 		<div class="bloc" id="#availableHours">
-			<select size="24" id="hours">
-			</select>
+			<div id="noHours"></div>
+			<select size="24" id="hours"></select>
 		</div>
 	</div>
 
@@ -81,35 +66,53 @@
 	<!-- Optional JavaScript -->
 	<script th:inline="javascript">
 	  $(document).ready(function() {
-          
-		  $("#data").on("change",function(){
-		        var selected = $(this).val();
-		        console.log(selected);
-		        var json = {
-		         date : selected,
-		         parcareId : $('.rezervare').attr('id')
-		        };
-				$.ajax({
-					type : "POST",
-					contentType : "application/json",
-					url : "/getAvailableHours",
-				    data : JSON.stringify(json),
-				    dataType : 'json',
-					success : function(result) {
-						console.log(result);
-						var options = "";
-						for (var i = 0; i < result.availableHoursNoPreference.length; i++){
-							options += "<option id='" + result.availableHoursNoPreference[i].id_statie + "'value='" + result.availableHoursNoPreference[i].hour + "'>"
-							+ result.availableHoursNoPreference[i].hour + "</option>";
-						}
-						$('#hours').html(options);
-						
-					},
-					error : function(e) {
-						alert("Error!")
-						console.log("ERROR: ", e);
+		function setAvailableHours(date){
+	        var json = {
+	         fast_charger : $("#fast-charging").is(":checked"),
+	         date : date,
+	         parcareId : $('.rezervare').attr('id')
+	        };
+			$.ajax({
+				type : "POST",
+				contentType : "application/json",
+				url : "/getAvailableHours",
+			    data : JSON.stringify(json),
+			    dataType : 'json',
+				success : function(result) {
+					var options = "";
+					var nr_hours = result.availableHoursNoPreference.length;
+					if (nr_hours == 0){
+						$("#noHours").append("<p>No hours available</p>");
 					}
-				});
+					for (var i = 0; i < result.availableHoursNoPreference.length; i++){
+						options += "<option id='" + result.availableHoursNoPreference[i].id_statie + "'value='" + result.availableHoursNoPreference[i].hour + "'>"
+						+ result.availableHoursNoPreference[i].hour + "</option>";
+					}
+					$('#hours').html(options);
+					
+				},
+				error : function(e) {
+					alert("Error!")
+					console.log("ERROR: ", e);
+				}
+			});
+		}	
+		
+		  $("#fast-charging").on("change",function(){
+			  var date = $("#data").val();
+			  if (date != ''){
+				  setAvailableHours(date);
+			  }else
+				  $("#hours").html("");
+			  	
+		  });
+		  
+		  $("#data").on("change",function(){
+			  var date = $("#data").val();
+			  if (date != '')
+			  	setAvailableHours(date);
+			  else
+				  $("#hours").html("");
 		    });
 	    });
 	
@@ -118,12 +121,14 @@
 	       
 	        var data = $("#data").val();
 	        var selectedHour = $('#hours').find(":selected").text();
+			var nr_inmatriculare = $('#nr_inmatriculare').val();
+			console.log(nr_inmatriculare);
 	        var json = {
 	         "fast_charger" : fast_charge,
 	         "date" : data,
 	         "ora_inceput" : selectedHour,
 	         "id_statie" : $('#hours').find(":selected").attr('id'),
-	         "user" : 0
+	         "nr_inmatriculare" : nr_inmatriculare
 	        };
 			$.ajax({
 				type : "POST",
@@ -132,7 +137,8 @@
 			    data : JSON.stringify(json),
 			    dataType : 'text',
 				success : function(result) {
-					alert(result);
+					setAvailableHours(data);
+					alert("success");
 					
 				},
 				error : function(e) {
@@ -149,18 +155,18 @@
 		$('#makereservation').css('display', 'block');
 		$('.rezervare').attr('id', event.target.id);
         
-                       var dtToday = new Date();
-    var month = dtToday.getMonth() + 1;
-    var day = dtToday.getDate();
-    var year = dtToday.getFullYear();
-    if(month < 10)
-        month = '0' + month.toString();
-    if(day < 10)
-        day = '0' + day.toString();
+        var dtToday = new Date();
+    	var month = dtToday.getMonth() + 1;
+    	var day = dtToday.getDate();
+    	var year = dtToday.getFullYear();
+    	if(month < 10)
+       	 	month = '0' + month.toString();
+    	if(day < 10)
+        	day = '0' + day.toString();
     
-    var maxDate = year + '-' + month + '-' + day;
+   		 var maxDate = year + '-' + month + '-' + day;
 
-    $('#data').attr('min', maxDate);
+    	$('#data').attr('min', maxDate);
 
 	});
 
@@ -173,8 +179,9 @@
 			$('.overlay').css('display' , 'none');
 	        container.hide();
 	        $('#hours').html('');
-            
-
+            $("#fast-charging").prop("checked", false);
+            $("#data").val("");
+			$("#nr_inmatriculare").val("");
 	    }
 	});
 	

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class DesiredReservationHour {
 
+	private boolean fast_charger;
 	private LocalDate date;
 	private int parcareId;
 
@@ -11,10 +12,19 @@ public class DesiredReservationHour {
 		
 	}
 	
-	public DesiredReservationHour(LocalDate date, int statieId) {
+	public DesiredReservationHour(boolean fast_charger, LocalDate date, int statieId) {
 		super();
+		this.fast_charger = fast_charger;
 		this.date = date;
 		this.parcareId = statieId;
+	}
+	
+	public boolean isFast_charger() {
+		return fast_charger;
+	}
+
+	public void setFast_charger(boolean fast_charger) {
+		this.fast_charger = fast_charger;
 	}
 
 	public LocalDate getDate() {

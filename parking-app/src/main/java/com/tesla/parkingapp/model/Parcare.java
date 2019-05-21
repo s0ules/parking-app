@@ -7,8 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 @Entity
 @Table(name = "parcare")
@@ -18,14 +27,20 @@ public class Parcare {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int parcareId;
 	
+	@ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+	
+	@Min(1)
 	@Column(name = "nr_locuri")
 	private int nr_locuri;
 	
+	@NotBlank
 	@Column(name = "adresa")
 	private String adresa;
 	
-	@Column(name = "status")
-	private Boolean status;
+	@Column(name = "status", columnDefinition = "TINYINT(1)")
+	private boolean status;
 	
 	@Column(name = "latitudine")
 	private double latitudine;
@@ -33,9 +48,13 @@ public class Parcare {
 	@Column(name = "longitudine")
 	private double longitudine;
 	
+	@NotNull
+	@DateTimeFormat(iso = ISO.TIME)
 	@Column(name = "ora_deschidere")
 	private LocalTime oraDeschidere;
 	
+	@NotNull
+	@DateTimeFormat(iso = ISO.TIME)
 	@Column(name = "ora_inchidere")
 	private LocalTime oraInchidere;
 	
@@ -51,9 +70,10 @@ public class Parcare {
 		
 	}
 	
-	public Parcare(int parcareId, int nr_locuri, LocalTime oraDeschidere, LocalTime oraInchidere, String adresa, Boolean status, Double lat, Double lng) {
+	public Parcare(int parcareId, User user, int nr_locuri, LocalTime oraDeschidere, LocalTime oraInchidere, String adresa, Boolean status, Double lat, Double lng) {
 		super();
 		this.parcareId = parcareId;
+		this.user = user;
 		this.nr_locuri = nr_locuri;
 		this.oraDeschidere = oraDeschidere;
 		this.oraInchidere = oraInchidere;
@@ -71,6 +91,14 @@ public class Parcare {
 		this.parcareId = parcareId;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	public int getNr_locuri() {
 		return nr_locuri;
 	}
@@ -103,11 +131,11 @@ public class Parcare {
 		this.adresa = adresa;
 	}
 
-	public Boolean getStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
@@ -127,6 +155,18 @@ public class Parcare {
 		this.longitudine = longitudine;
 	}
 
+	@Bean
+	public Java8TimeDialect java8TimeDialect() {
+		return new Java8TimeDialect();
+	}
+
+	@Override
+	public String toString() {
+		return "Parcare [parcareId=" + parcareId + ", user=" + user + ", nr_locuri=" + nr_locuri + ", adresa=" + adresa
+				+ ", status=" + status + ", latitudine=" + latitudine + ", longitudine=" + longitudine
+				+ ", oraDeschidere=" + oraDeschidere + ", oraInchidere=" + oraInchidere + "]";
+	}
+	
 /*	public Set<Programare> getProgramari() {
 		return programari;
 	}
@@ -153,11 +193,6 @@ public class Parcare {
 		this.statii = statii;
 	}
 	*/
-	@Override
-	public String toString() {
-		return "Parcare [id_parcare=" + parcareId + ", nr_locuri=" + nr_locuri + ", adresa=" + adresa + ", status="
-				+ status + "]";
-	}
-
+	
 	
 }

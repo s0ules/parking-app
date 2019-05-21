@@ -4,16 +4,16 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvailableHours {
+public class AvailableHoursStatie {
 
 	private List<LocalTime> hours;
 	private int statieId;
 	
-	public AvailableHours() {
+	public AvailableHoursStatie() {
 		
 	}
 	
-	public AvailableHours(List<LocalTime> hours, int statieId) {
+	public AvailableHoursStatie(List<LocalTime> hours, int statieId) {
 		super();
 		this.hours = hours;
 		this.statieId = statieId;
@@ -34,7 +34,5 @@ public class AvailableHours {
 	public void setStatieId(int statieId) {
 		this.statieId = statieId;
 	}
-	
-	
 	
 }

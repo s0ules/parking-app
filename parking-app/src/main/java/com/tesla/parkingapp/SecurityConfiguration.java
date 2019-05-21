@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,8 +19,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.tesla.parkingapp.utils.CustomSuccessHandler;
 
 @Configuration
+@EnableAutoConfiguration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -55,8 +57,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/home").permitAll()
 		.antMatchers("/admin").hasAuthority("ADMIN_USER")
 		.antMatchers("/user").hasAnyAuthority("SITE_USER", "ADMIN_USER")
+		.antMatchers("/firma").hasAnyAuthority("FIRMA_USER", "ADMIN_USER")
+		.antMatchers("/adauga-parcare").hasAnyAuthority("FIRMA_USER", "ADMIN_USER")
 		.antMatchers("/user-reservations").hasAnyAuthority("SITE_USER", "ADMIN_USER")
-		.antMatchers("/administrare-parcare").hasAuthority("ADMIN_USER")
 		.antMatchers("/home/**").permitAll()
 		.anyRequest().authenticated().and().csrf().disable().formLogin().loginPage("/login")
 		.failureUrl("/login?error=true").successHandler(customSuccessHandler).usernameParameter("email")

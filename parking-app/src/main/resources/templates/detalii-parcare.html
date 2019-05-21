@@ -1,87 +1,206 @@
-<!doctype html>
-<html lang="en">
+<!doctype html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<div th:replace="header :: header-css"></div>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    
-    <!-- Fonts -->
-    
-    <!-- CSS File -->
-    <link rel="stylesheet" href="css/detalii-parcare.css" type="text/css">
-    <title>ParkingApp</title>
+<link rel="stylesheet" href="css/detalii-parcare.css" type="text/css">
+	
+
 </head>
 <body>
-    <div class="container-fluid height-full">
-        <div class="header">
-	       <ul class="menu container">
-	         <li>Home</li>
-	         <li>Logout</li>
-           </ul>
-        </div>
-        <div id="logo" class="row d-flex justify-content-center">
-            <h1 class="col-xl-12">Tesla</h1>
-        </div>
-        <div class="container row main height-full width-full">
-            <div class="row width-full">
-                <div class="col-xl-7 col-md-7 section section-bgc" id="caracteristici">
-                  <div class="row width-full">
-                    <h2 class="col-xl-12 col-md-12">Caracteristici</h2> 
-                  </div>
-                  <div class="row width-full statistics">
-                      <span class="col-xl-6 col-md-6">Adresa</span>
-                      <span class="col-xl-6 col-md-6" id="adress" name="adress">Strada..</span>
-                      <span class="col-xl-6 col-md-6">Numar locuri</span>
-                      <span class="col-xl-6 col-md-6" id="nr_locuri" name="nr_locur">10</span>
-                      <span class="col-xl-6 col-md-6">Ora deschidere</span>
-                      <span class="col-xl-6 col-md-6" id="ora_deschidere" name="ora_deschidere">12:00</span>
-                      <span class="col-xl-6 col-md-6">Ora inchidere</span>
-                      <span class="col-xl-6 col-md-6" id="ora_inchidere" name="ora_inchidere">12:00</span>
-                      <span class="col-xl-6 col-md-6">Status</span>
-                      <span class="col-xl-6 col-md-6" id="status" name="status">open</span>
-                      <span class="col-xl-6 col-md-6">Latitudine</span>
-                      <span class="col-xl-6 col-md-6" id="latitudine" name="latitudine">12.123123</span>
-                      <span class="col-xl-6 col-md-6">Longitudine</span>
-                      <span class="col-xl-6 col-md-6" id="longitudine" name="longitudine">12.123123</span>
-                  </div>
-                </div>
-                <div class="col-xl-4 col-md-4 section">
-                  <div class="row section-bgc aside">
-                      <div class="row width-full">
-                        <h2 class="col-xl-12 col-md-12">Statistici</h2> 
-                      </div>
-                      <div class="row width-full statistics">
-                          <span class="col-xl-6 col-md-6">Profit</span>
-                          <span class="col-xl-6 col-md-6" id="profit" name="profit">150 lei</span>
-                          <span class="col-xl-6 col-md-6">Locuri ocupate</span>
-                          <span class="col-xl-6 col-md-6" id="locuri_ocupate" name="locuri_ocupate">10</span>
-                      </div>
-                  </div>
-                    <div class="row section-bgc aside" id="admin">
-                      <div class="row width-full">
-                        <h2 class="col-xl-12 col-md-12">Administrator</h2> 
-                      </div>
-                      <div class="row width-full statistics">
-                          <span class="col-xl-6 col-md-6">Email</span>
-                          <span class="col-xl-6 col-md-6" id="email" name="email">user@yahoo.com</span>
-                          <span class="col-xl-6 col-md-6">Name</span>
-                          <span class="col-xl-6 col-md-6" id="name" name="name">Admin</span>
-                          <div class="col-xl-12 col-md-12 button">
-                            <button class="btn btn-primary">Edit</button>
-                          </div>
-                      </div>
-                  </div>
-                </div>    
-            </div>
-        </div>
-    </div>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<div class="container-fluid height-full">
+		<div th:replace="header :: header"></div>
+		<div id="logo" class="row d-flex justify-content-center">
+			<h1 class="col-xl-12">Tesla</h1>
+		</div>
+		<div class="container row main height-full width-full">
+			<div class="row width-full">
+				<div class="col-xl-5 col-md-5 section section-bgc"
+					id="caracteristici">
+					<div class="row width-full">
+						<h2 class="col-xl-12 col-md-12">Caracteristici</h2>
+					</div>
+					<div class="row width-full statistics">
+						<form id="formParcare" class='width-full'
+							th:action='@{/detalii-parcare}' th:object='${parcare}'
+							method='post'>
+							<div th:if="${message == 'success'}">
+								<div class="alert alert-success">
+									Parcare updatata cu succes!
+									<button type="button" class="close" data-dismiss="alert"
+										aria-label="Close">
+
+										<span aria-hidden="true">&times;</span>
+
+									</button>
+								</div>
+							</div>
+							<div th:if="${message == 'failed'}">
+								<div class="alert alert-danger">Eroare la update!</div>
+							</div>
+							<input type='hidden' name='parcareId' th:field='*{parcareId}'>
+							<div class='row form-group verical-space'>
+								<label class='col-xl-4 col-md-4' for='name'>Adresa: </label> <input
+									class='col-xl-8 col-md-8 form-control' type='text' id='name'
+									name='adresa' th:field='*{adresa}' placeholder='Adress'>
+							</div>
+							<div class='row form-group verical-space'>
+								<label class='col-xl-4 col-md-4' for='nr_locuri'>Locuri:
+								</label> <input class='col-xl-8 col-md-8 form-control' type='number'
+									id='nr_locuri' name='nr_locuri' th:field='*{nr_locuri}'
+									placeholder='Number of spots'>
+							</div>
+							<div class='row form-group verical-space'>
+								<label class='col-xl-4 col-md-4' for='ora_deschidere'>Ora
+									deschidere: </label> <input class='col-xl-8 col-md-8 form-control'
+									type='time' id='oraDeschidere' name='oraDeschidere'
+									th:field='*{oraDeschidere}' th:value='*{oraDeschidere}'
+									placeholder='Ora deschidere'>
+							</div>
+							<div class='row form-group verical-space'>
+								<label class='col-xl-4 col-md-4' for='ora_inchidere'>Ora
+									inchidere: </label> <input class='col-xl-8 col-md-8 form-control'
+									type='time' id='oraInchidere' name='oraInchidere'
+									th:field='*{oraInchidere}' placeholder='Ora inchidere'>
+							</div>
+							<div class='row form-group verical-space'>
+								<span id="status_val" style="display: none;" th:text="*{status}"></span>
+								<label class='col-xl-4 col-md-4' for='status'>Status: </label> <input
+									id="status" name='status' th:field='*{status}' type="checkbox"
+									data-toggle="toggle" data-width="100" data-onstyle="success"
+									data-offstyle="danger" data-on="Open" data-off="Close">
+							</div>
+							<div class='row verical-space buttons'>
+								<button type='submit'
+									class='btn btn-primary btn-style col-xl-4 update' name='update'>Update</button>
+								<button type='submit'
+									class='btn btn-primary btn-style col-xl-4 delete' name='delete'>Delete</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="col-xl-6 col-md-6 section">
+					<div class="row section-bgc aside">
+						<div class="row width-full">
+							<h2 class="col-xl-12 col-md-12">Statistici</h2>
+						</div>
+						<div class="row width-full statistics">
+						<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+							<span class="col-xl-6 col-md-6">Profit</span> <span
+								class="col-xl-6 col-md-6" id="profit" name="profit">150
+								lei</span> <span class="col-xl-6 col-md-6">Locuri ocupate</span> <span
+								class="col-xl-6 col-md-6" id="locuri_ocupate"
+								name="locuri_ocupate" th:text="${locuri_ocupate}"></span>
+						</div>
+					</div>
+					<div class="row section-bgc aside" id="admin">
+						<div class="row width-full">
+							<h2 class="col-xl-12 col-md-12">Administrator</h2>
+						</div>
+						<div class="row width-full statistics">
+							<form id="formParcare" class='width-full'
+								th:action='@{/detalii-parcare/administrator}'
+								th:object='${parcare}' method='post'>
+								<span class="col-xl-6 col-md-6">Email</span> <span
+									class="col-xl-6 col-md-6" id="email" name="email">user@yahoo.com</span>
+								<input type="text" id="firmaEmail"> <span
+									class="col-xl-6 col-md-6">Name</span> <span
+									class="col-xl-6 col-md-6" id="name" name="name">Admin</span>
+								<div class="col-xl-12 col-md-12 button">
+									<button class="btn btn-primary">Edit</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script th:inline="javascript">
+		$(document).ready(function() {
+			$("#firmaEmail").autocomplete({
+				source : "/detalii-parcare/search",
+				minLength : 3
+			});
+			var status = $('#status_val').text();
+			if (status == "true") {
+				$('#status').bootstrapToggle('on');
+			} else {
+				$('#status').bootstrapToggle('off');
+			}
+			
+		});
+	
+		
+			window.onload = function() {
+				//chart
+				var dps = [];
+				
+				 
+				var xValue;
+				var yValue;
+				var dataPointsList = [[${dataPointsList}]]; 
+				for (var i = 0; i < dataPointsList.length; i++){
+					dps[i] = [];
+					for (var j = 0; j < dataPointsList[i].length; j++){
+						xValue = parseInt(dataPointsList[i][j].x);
+						yValue = parseFloat(dataPointsList[i][j].y);				
+						dps[i].push({
+							x : xValue,
+							y : yValue
+						});		
+					}
+				}
+				
+				var chart = new CanvasJS.Chart("chartContainer", {
+					theme: "light2", // "light1", "dark1", "dark2"
+					animationEnabled: true,
+					title: {
+						text: "Profitul pe ultimele 7 zile"
+					},
+					axisX: {
+						valueFormatString: "DD-MMM"
+					},
+					axisY: {
+						title: "Valoare in lei",
+						suffix: " lei"
+					},
+					data: [
+					      {        
+					        type: "area",
+					        color: "rgba(0,75,141,0.7)",
+					        dataPoints: [
+
+					        { x: new Date(2012, 06, 15), y: 0},       
+					        { x: new Date(2012, 06, 18), y: 20 }, 
+					        { x: new Date(2012, 06, 23), y: 30 }, 
+					        { x: new Date(2012, 07, 1), y: 10}, 
+					        { x: new Date(2012, 07, 11), y: 21}, 
+					        { x: new Date(2012, 07, 23), y: 50} ,
+					        { x: new Date(2012, 07, 31), y: 75}, 
+					        { x: new Date(2012, 08, 04), y: 10},
+					        { x: new Date(2012, 08, 10), y: 12},
+					        { x: new Date(2012, 08, 13), y: 15}, 
+					        { x: new Date(2012, 08, 16), y: 17}, 
+					        { x: new Date(2012, 08, 18), y: 20}, 
+					        { x: new Date(2012, 08, 21), y: 22}, 
+					        { x: new Date(2012, 08, 24), y: 25}, 
+					        { x: new Date(2012, 08, 26), y: 27}, 
+					        { x: new Date(2012, 08, 28), y: 30} 
+					        ]
+					    }
+					    
+					    ]
+					
+				});
+				
+				
+				chart.render();
+				//end chart
+			}
+	</script>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>

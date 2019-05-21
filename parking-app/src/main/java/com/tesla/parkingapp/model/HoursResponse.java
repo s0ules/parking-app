@@ -3,24 +3,24 @@ package com.tesla.parkingapp.model;
 import java.util.List;
 
 public class HoursResponse {
-	private List<AvailableHours> availableHours;
+	private List<AvailableHoursStatie> availableHours;
 	private List<StatieHour> availableHoursNoPreference;
 	
 	public HoursResponse() {
 		
 	}
 	
-	public HoursResponse(List<AvailableHours> availableHours, List<StatieHour> availableHoursNoPreference) {
+	public HoursResponse(List<AvailableHoursStatie> availableHours, List<StatieHour> availableHoursNoPreference) {
 		super();
 		this.availableHours = availableHours;
 		this.availableHoursNoPreference = availableHoursNoPreference;
 	}
 
-	public List<AvailableHours> getAvailableHours() {
+	public List<AvailableHoursStatie> getAvailableHours() {
 		return availableHours;
 	}
 
-	public void setAvailableHours(List<AvailableHours> availableHours) {
+	public void setAvailableHours(List<AvailableHoursStatie> availableHours) {
 		this.availableHours = availableHours;
 	}
 

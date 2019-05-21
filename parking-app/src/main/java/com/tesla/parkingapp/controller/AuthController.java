@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,19 +23,17 @@ import com.tesla.parkingapp.model.Parcare;
 import com.tesla.parkingapp.model.User;
 import com.tesla.parkingapp.service.ParcareService;
 import com.tesla.parkingapp.service.UserService;
-import com.tesla.parkingapp.validator.UserValidator;
 import com.tesla.parkingapp.web.UserRegistrationDto;
 
 @Controller
 public class AuthController {
-	
+
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private ParcareService parcareService;
-	@Autowired
-	private UserValidator userValidator;
-	
+
+
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
 		ModelAndView model = new ModelAndView();
@@ -45,7 +41,7 @@ public class AuthController {
 		model.setViewName("user/login");
 		return model;
 	}
-	
+
 	@RequestMapping(value = { "/registration" }, method = RequestMethod.GET)
 	public ModelAndView showRegistration() {
 		ModelAndView model = new ModelAndView();
@@ -54,25 +50,25 @@ public class AuthController {
 
 		return model;
 	}
-	
+
 	@RequestMapping(value = { "/registration" }, method = RequestMethod.POST)
-    public String registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto, 
-                                      BindingResult result){
+	public String registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto,
+			BindingResult result) {
 
-        User existing = userService.findUserByEmail(userDto.getEmail());
-        if (existing != null){
-            result.rejectValue("email", null, "There is already an account registered with that email");
-        }
+		User existing = userService.findUserByEmail(userDto.getEmail());
+		if (existing != null) {
+			result.rejectValue("email", null, "There is already an account registered with that email");
+		}
 
-        if (result.hasErrors()){
-            return "registration";
-        }
+		if (result.hasErrors()) {
+			return "registration";
+		}
 
-        userService.saveUser(userDto);
-        return "redirect:/registration?success";
-    }
-	
-	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+		userService.saveUser(userDto);
+		return "redirect:/registration?success";
+	}
+
+	@RequestMapping(value = { "/"}, method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -89,14 +85,17 @@ public class AuthController {
 				model.addObject("parcare", new Parcare());
 				model.addObject("parcari", parcareService.findAll());
 				model.setViewName("/admin");
+			} else if (isFirma(roles)) {
+				model.addObject("parcare", new Parcare());
+				model.addObject("parcari", parcareService.findByUser_UserId(user.getId()));
+				model.setViewName("/firma");
 			} else if (isUser(roles)) {
 				model.addObject("parcari", parcareService.findAll());
-				model.setViewName("/user");
+				model.setViewName("user/user");
 			}
 		} else {
 			model.setViewName("user/login");
 		}
-
 		return model;
 
 	}
@@ -114,7 +113,7 @@ public class AuthController {
 		}
 		return false;
 	}
-	
+
 	private boolean isFirma(List<String> roles) {
 		if (roles.contains("FIRMA_USER")) {
 			return true;

@@ -12,6 +12,7 @@ import com.tesla.parkingapp.web.UserRegistrationDto;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -46,5 +47,10 @@ public class UserServiceImpl implements UserService {
 		Role userRole = roleRespository.findByRole(role);
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 		userRepository.save(user);
+	}
+
+	@Override
+	public List<String> search(String email) {
+		return userRepository.search(email);
 	}
 }

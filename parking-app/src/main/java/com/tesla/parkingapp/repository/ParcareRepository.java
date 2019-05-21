@@ -12,7 +12,9 @@ public interface ParcareRepository extends JpaRepository<Parcare, Integer>{
 	
 	 List<Parcare> findAll();
 	
-	 //List<Parcare> findByUser_Id(int )
+	 List<Parcare> findByLatitudineAndLongitudine(double latitudine, double longitudine);
+	 
+	 List<Parcare> findByUser_Id(int user_id);
 	 
 	 Parcare findById(int parcare_id);
 	 
