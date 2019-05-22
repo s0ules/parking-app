@@ -69,7 +69,7 @@ public class AuthController {
 	}
 
 	@RequestMapping(value = { "/"}, method = RequestMethod.GET)
-	public ModelAndView home(HttpServletRequest request) {
+	public String home(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
@@ -81,22 +81,15 @@ public class AuthController {
 			for (GrantedAuthority a : authorities) {
 				roles.add(a.getAuthority());
 			}
-			if (isAdmin(roles)) {
-				model.addObject("parcare", new Parcare());
-				model.addObject("parcari", parcareService.findAll());
-				model.setViewName("/admin");
-			} else if (isFirma(roles)) {
-				model.addObject("parcare", new Parcare());
-				model.addObject("parcari", parcareService.findByUser_UserId(user.getId()));
-				model.setViewName("/firma");
+			if (isAdmin(roles) || isFirma(roles)) {
+				return "redirect:/admin";			
 			} else if (isUser(roles)) {
-				model.addObject("parcari", parcareService.findAll());
-				model.setViewName("user/user");
+				return "redirect:/user";
 			}
-		} else {
-			model.setViewName("user/login");
-		}
-		return model;
+		} 
+		
+		return "redirect:/login";
+	
 
 	}
 

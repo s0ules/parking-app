@@ -142,10 +142,10 @@ public class UserController {
 			}
 			availableHours.add(new AvailableHoursStatie(dates, statie.getStatieId()));
 		}
-		
+
 		if (desiredHour.isFast_charger())
 			return new HoursResponse(availableHours, getHoursFastCharging(
-				parcareService.findById(desiredHour.getParcareId()), availableHours, desiredHour.getDate()));
+					parcareService.findById(desiredHour.getParcareId()), availableHours, desiredHour.getDate()));
 		else
 			return new HoursResponse(availableHours, getNoPreferenceHours(
 					parcareService.findById(desiredHour.getParcareId()), availableHours, desiredHour.getDate()));
@@ -155,15 +155,26 @@ public class UserController {
 			LocalDate desiredDate) {
 		List<StatieHour> hours = new ArrayList<>();
 		LocalTime oraInchidere = parcare.getOraInchidere();
+		LocalTime oraDeschidere = parcare.getOraDeschidere();
 		LocalTime currentTime = LocalTime.now();
 		LocalDate currentDate = LocalDate.now();
 		LocalTime possibleHour = parcare.getOraDeschidere();
-		if (currentDate.isEqual(desiredDate))
-			possibleHour = LocalTime.of(currentTime.plusHours(1).getHour(), 00);
+		boolean sameDay = false;
+
+		if (currentDate.isEqual(desiredDate)) {
+			if (currentTime.isAfter(LocalTime.of(00, 00))) {
+				possibleHour = oraDeschidere;
+			} else {
+				possibleHour = LocalTime.of(currentTime.plusHours(1).getHour(), 00);
+			}
+			sameDay = true;
+		}
 
 		for (AvailableHoursStatie avHoursStatie : avHoursStatii) {
 			for (LocalTime AvHourStatie : avHoursStatie.getHours()) {
-				if (possibleHour.isAfter(oraInchidere.minusHours(1))) {
+				if ((possibleHour.isAfter(oraInchidere.minusHours(1)) && !sameDay)
+						|| (LocalDateTime.of(currentDate, possibleHour)
+								.isAfter(LocalDateTime.of(currentDate, oraInchidere)) && sameDay)) {
 					return hours;
 				}
 				if (AvHourStatie.equals(possibleHour)) {
@@ -175,20 +186,31 @@ public class UserController {
 
 		return hours;
 	}
-	
+
 	private List<StatieHour> getHoursFastCharging(Parcare parcare, List<AvailableHoursStatie> avHoursStatii,
 			LocalDate desiredDate) {
 		List<StatieHour> hours = new ArrayList<>();
 		LocalTime oraInchidere = parcare.getOraInchidere();
+		LocalTime oraDeschidere = parcare.getOraDeschidere();
 		LocalTime currentTime = LocalTime.now();
 		LocalDate currentDate = LocalDate.now();
 		LocalTime possibleHour = parcare.getOraDeschidere();
-		if (currentDate.isEqual(desiredDate))
-			possibleHour = LocalTime.of(currentTime.plusHours(1).getHour(), 00);
+		boolean sameDay = false;
+
+		if (currentDate.isEqual(desiredDate)) {
+			if (currentTime.isAfter(LocalTime.of(00, 00))) {
+				possibleHour = oraDeschidere;
+			} else {
+				possibleHour = LocalTime.of(currentTime.plusHours(1).getHour(), 00);
+			}
+			sameDay = true;
+		}
 
 		for (AvailableHoursStatie avHoursStatie : avHoursStatii) {
 			for (LocalTime AvHourStatie : avHoursStatie.getHours()) {
-				if (possibleHour.isAfter(oraInchidere.minusHours(1))) {
+				if ((possibleHour.isAfter(oraInchidere.minusHours(1)) && !sameDay)
+						|| (LocalDateTime.of(currentDate, possibleHour)
+								.isAfter(LocalDateTime.of(currentDate, oraInchidere)) && sameDay)) {
 					return hours;
 				}
 				if (AvHourStatie.equals(possibleHour) && avHoursStatie.getHours().contains(possibleHour.plusHours(1))) {
@@ -202,8 +224,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/makeReservation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody int makeReservation(@RequestBody ProgramareResponse data,
-			Authentication authentication) {
+	public @ResponseBody int makeReservation(@RequestBody ProgramareResponse data, Authentication authentication) {
 		User user = userService.findUserByEmail(authentication.getName());
 		int id_tip = 1;
 		if (data.getFast_charger())
@@ -217,7 +238,8 @@ public class UserController {
 			ora_sf = data.getOra_inceput().getHour() + 2;
 		LocalTime sf_time = LocalTime.of(ora_sf, 00);
 		LocalDateTime ora_sfarsit = LocalDateTime.of(data.getDate(), sf_time);
-		Programare programare = new Programare(tip_incarcare, ora_inceput, ora_sfarsit, statie, user, data.getNr_inmatriculare());
+		Programare programare = new Programare(tip_incarcare, ora_inceput, ora_sfarsit, statie, user,
+				data.getNr_inmatriculare());
 
 		programareService.saveProgramare(programare);
 

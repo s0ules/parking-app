@@ -160,5 +160,21 @@ form .row{
     }
 }
 
+span{
+	font-size: 14px;
+	padding-bottom: 10px;
+}
 
+.btn-style{
+	font-size: 14px;
+}
+.row{
+	padding:0;
+}
+.gm-style .gm-style-iw-d{
+	overflow: hidden;
+}
 
+.buttons{
+	margin-top: 15px;
+}

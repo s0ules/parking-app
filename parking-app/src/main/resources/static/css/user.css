@@ -49,7 +49,6 @@ button {
 	border-radius: 10px;
 	margin: auto;
 	border: 0;
-	width: 100%;
 }
 
 .row {
@@ -75,10 +74,10 @@ button {
 	margin: 20px;
 }
 
-.show {
+/*.show {
 	background-color: #2a518c;
 	margin-left: 80px;
-}
+}*/
 
 .container-fluid {
 	padding: 0;
@@ -122,7 +121,7 @@ button {
 	display: flex;
 	flex-flow: column wrap;
 	align-items: left;
-	margin: 30px 50px 0px 50px;
+	background-color: grey;
 }
 
 #availableHours {
@@ -156,13 +155,12 @@ input[type=checkbox] {
 	vertical-align: top;
 	overflow: hidden;
 	border: solid grey 1px;
-	height: 500px;
+	height: 350px;
 }
 
 .bloc select {
 	padding: 10px;
-	margin: -5px -20px -5px -5px;
-	width: 423px;
+	width: 464px;
 	text-align: center;
 	height: 100%;
 	font-size: 18px;
@@ -180,10 +178,6 @@ input[type=checkbox] {
 	width: 100px;
 }
 
-#submitreservation{
-	margin-bottom: 10px;
-}
-
 #data{
 	padding: 0 0 0 5px;
 	width: 120px;
@@ -191,4 +185,80 @@ input[type=checkbox] {
 
 #fast-charging{
 	margin: 5px 0 0 5px;
+}
+
+.row{
+    padding: 0;
+    flex-wrap: nowrap;!important
+    margin: 0;
+}
+.pop{
+    margin: 5% 0;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+}
+.verical-space{
+    margin: auto 0px;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.btn-style{
+    font-size: 14px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #2c74e0;
+    margin: auto;
+    border: 0;
+    width: 100%;
+}
+
+.pop span{
+	font-size: 14px;
+	padding-bottom: 10px;
+}
+
+.btn-style{
+	font-size: 14px;
+}
+.row{
+	padding:0;
+}
+.gm-style .gm-style-iw-d{
+	overflow: hidden;
+}
+
+.rezerva{
+	margin-top: 15px;
+}
+
+.closed{
+	text-align: center;
+	font-style: bold;
+	font-size: 18px;
+	color: red;
+}
+
+#noHours{
+	display: flex;
+	justify-content: center;
+	color: red;
+	font-size: 20px;
+}
+#noHours p{
+	padding-top: 10px;
+}
+#modalDialog{
+	z-index:1060;
+}
+#modalDialog .modal-footer{
+	padding: 0;
+}
+#modalDialog .modal-body{
+	color: green;
+	font-size: 30px;
+	text-align: center;
 }

@@ -15,25 +15,9 @@
 			"
 		</div>
 		<div class="container row main height-full width-full">
+	
 			<div class="row width-full" id="map">
-
-				<!--  <form class="width-full" th:action="@{/administrare-parcare}" th:object="${parcare}"  method="post">
-                  <div class="row form-group verical-space">
-                    <input class="col-xl-12 col-md-12 form-control" type="text" id="name" name="adresa" th:field="*{adresa}" placeholder="Adress">
-                  </div>
-                  <div class="row form-group verical-space">
-                    <input class="col-xl-12 col-md-12 form-control" type="number" id="phone" name="nr_locuri" th:field="*{nr_locuri}" placeholder="Number of spots">
-                  </div>
-                  <div class="row form-group verical-space">
-                    <button class="col-xl-6 col-md-6 form-control delete" id="close">CLOSE</button>
-                    <button class="col-xl-6 col-md-6 form-control add" hidden id="open">OPEN</button>
-                  </div>
-                  <div class="row verical-space">    
-                    <button type="submit" class="btn-style col-xl-4 add" name="add">Add</button>
-                    <button type="submit" class="btn-style col-xl-4 delete" name="delete">Delete</button>
-                    <button type="submit" class="btn-style col-xl-4 update" name="update">Update</button>
-                  </div>
-                </form>-->
+			
 			</div>
 		</div>
 	</div>
@@ -43,11 +27,10 @@
 	  $(document).ready(function() {
          
 	 });
-	
 function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
-          center: {lat: 46.769605, lng: 23.588730}
+          center: {lat: 46.775349, lng: 23.622477}
         });
         var geocoder = new google.maps.Geocoder();
         geocodeAddress(geocoder, map);
@@ -70,32 +53,28 @@ function initMap() {
         	  var html = "<form class='width-full' th:action='@{/administrare-parcare}' th:object='${parcare}'  method='post'>" +
         	  	"<input type='hidden' name='parcareId' th:field='*{parcareId}' value='" + id + "'>" +
                   "<div class='row form-group verical-space'>" +
-                  "<label class='col-xl-4 col-md-4' for='name'>Adresa: </label> <input class='col-xl-8 col-md-8 form-control' type='text' id='name' name='adresa' th:field='*{adresa}' placeholder='Adress' value='" + address + "'>" +
+                  "<span class='width-full' type='text' id='name' name='adresa' placeholder='Adress'>" + address + "</span>" +
                 "</div>" +
                 "<div class='row form-group verical-space' style='float:left'>" +
-                  "<label class='col-xl-4 col-md-4' for='nr_locuri'>Locuri: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='nr_locuri' name='nr_locuri' th:field='*{nr_locuri}' placeholder='Number of spots' value='" + nr_locuri + "'>" + 
+                  "<span class='col-xl-5 col-md-5'>Locuri: </span> <span class='col-xl-5 col-md-5 type='number' id='nr_locuri' name='nr_locuri' placeholder='Number of spots'>" + nr_locuri + "</span>" + 
                 "</div>" +
                 "<div class='row form-group verical-space' style='float:left'>" +
-                "<label class='col-xl-4 col-md-4' for='ora_deschidere'>Ora deschidere: </label> <input class='col-xl-8 col-md-8 form-control' type='time' id='oraDeschidere' name='oraDeschidere' th:field='*{oraDeschidere}' placeholder='Ora deschidere' value='" + deschidere + "'></div>" + 
+                "<span class='col-xl-5 col-md-5'>Deschidere: </span> <span class='col-xl-5 col-md-5' id='oraDeschidere' name='oraDeschidere'  placeholder='Ora deschidere' >" + deschidere + "</span></div>" + 
                 "<div class='row form-group verical-space' style='float:left'>" +
-                "<label class='col-xl-4 col-md-4' for='ora_inchidere'>Ora inchidere: </label> <input class='col-xl-8 col-md-8 form-control' type='time' id='oraInchidere' name='oraInchidere' th:field='*{oraInchidere}' placeholder='Ora inchidere' value='" + inchidere + "'>" +
+                "<span class='col-xl-5 col-md-5'>Inchidere: </span> <span class='col-xl-5 col-md-5 ' id='oraInchidere' name='oraInchidere'  placeholder='Ora inchidere' >" + inchidere + "</span>" +
               	"</div>" +
-              	"<div class='row form-group verical-space' style='float:left'>" +
-                "<label class='col-xl-4 col-md-4' for='pret'>Pret: </label> <input class='col-xl-8 col-md-8 form-control' type='number' id='pret' name='pret' th:field='*{pret}' placeholder='Pret' value='" + pret + "'>" + 
-             	 "</div>" +
-                "<div class='row form-group verical-space'>" +
-                "<input id='status' class='status' type='checkbox' name='status' th:field='*{status}' th:checked=" + status + ">"+            
-                "</div>" +
-                "<div class='row verical-space'>" +
-                  "<button type='submit' class='btn-style col-xl-4' name='details'>Details</button>" +
-                  "<button type='submit' class='btn-style col-xl-4' name='rezervations'>Reservations</button>" +
+                "<div class='row verical-space buttons'>" +
+                  "<button type='submit' class='btn btn-primary btn-style col-xl-5' name='details'>Manage</button>" +
+                  "<button type='submit' class='btn btn-primary btn-style col-xl-6' name='rezervations'>Reservations</button>" +
                 "</div>" +
               "</form>";
               
         	  var marker = new google.maps.Marker({
                   map: resultsMap,
                   position: new google.maps.LatLng(lat, lng),
+                  icon: "/img/parking-icon.png"
                 });
+          
         	  makeInfoWindowEvent(map, infowindow, html, marker);
           }
           

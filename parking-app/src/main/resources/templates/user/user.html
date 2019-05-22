@@ -8,33 +8,44 @@
 	integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
 	crossorigin="" />
 <link rel="stylesheet" href="css/user.css" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 <title>ParkingApp</title>
 
 </head>
 <body>
-	<div id="wrap">
-		<div class="container-fluid  height-full">
-			<div th:replace="header :: header"></div>
-			<div id="logo" class="row d-flex justify-content-center">
-				<h1 class="col-xl-12">Tesla</h1>
-			</div>
-			<div class="container search height-full width-full">
-				<div id="map" class="row width-full main">
-					<!--  <div class="col-sm-12 col-xl-4 buttons">
-                    <button>Reservations</button>
-                    <button>Make reservation</button>
-                    <th:block th:utext="${parcari[0].adresa}"/>
-                </div>
-                <div  class="col-sm-12 col-xl-7 show"></div>-->
-
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class='overlay'></div>
-
-	<div id='makereservation'>
-		<div class='rezervare'>
+	 	
+<div class="modal" id="modalDialog"  role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <div class="modal-body">
+      Loc Rezervat!
+      </div>
+      
+       <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+    </div>
+</div>
+	
+	<div class="modal fade" id="rezervaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       		<div class='rezervare'>
 			<div class="item">
 
 				<label>Data dorita:</label> <input type="date" class="form-control"
@@ -52,16 +63,36 @@
 			</div>
 			
 			</div>
-			<input type="submit" id="submitreservation"
-				class="btn btn-primary btn-sm" value="Rezerva">
 		</div>
 
 		<div class="bloc" id="#availableHours">
 			<div id="noHours"></div>
 			<select size="24" id="hours"></select>
 		</div>
-	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" id="submitreservation"  class="btn btn-primary">Rezerva</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+
+
+	<div id="wrap">
+		<div class="container-fluid  height-full">
+			<div th:replace="header :: header"></div>
+			<div id="logo" class="row d-flex justify-content-center">
+				<h1 class="col-xl-12">Tesla</h1>
+			</div>
+			<div class="container search height-full width-full">
+				<div id="map" class="row width-full main">
+					
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- Optional JavaScript -->
 	<script th:inline="javascript">
@@ -109,97 +140,81 @@
 		  
 		  $("#data").on("change",function(){
 			  var date = $("#data").val();
+			  $("#noHours").html("");
 			  if (date != '')
 			  	setAvailableHours(date);
 			  else
 				  $("#hours").html("");
 		    });
-	    });
-	
-	  $("body").on("click", "#submitreservation", function(event){
-	        var fast_charge = $("#fast-charging").is(":checked");
-	       
-	        var data = $("#data").val();
-	        var selectedHour = $('#hours').find(":selected").text();
-			var nr_inmatriculare = $('#nr_inmatriculare').val();
-			console.log(nr_inmatriculare);
-	        var json = {
-	         "fast_charger" : fast_charge,
-	         "date" : data,
-	         "ora_inceput" : selectedHour,
-	         "id_statie" : $('#hours').find(":selected").attr('id'),
-	         "nr_inmatriculare" : nr_inmatriculare
-	        };
-			$.ajax({
-				type : "POST",
-				contentType : "application/json",
-				url : "/makeReservation",
-			    data : JSON.stringify(json),
-			    dataType : 'text',
-				success : function(result) {
-					setAvailableHours(data);
-					alert("success");
-					
-				},
-				error : function(e) {
-					alert("Error!")
-					console.log("ERROR: ", e);
-				}
+		  
+		  
+		  $("body").on("click", "#submitreservation", function(event){
+		        var fast_charge = $("#fast-charging").is(":checked");
+		       
+		        var date = $("#data").val();
+		        var selectedHour = $('#hours').find(":selected").text();
+				var nr_inmatriculare = $('#nr_inmatriculare').val();
+
+		        var json = {
+		         "fast_charger" : fast_charge,
+		         "date" : date,
+		         "ora_inceput" : selectedHour,
+		         "id_statie" : $('#hours').find(":selected").attr('id'),
+		         "nr_inmatriculare" : nr_inmatriculare
+		        };
+				$.ajax({
+					type : "POST",
+					contentType : "application/json",
+					url : "/makeReservation",
+				    data : JSON.stringify(json),
+				    dataType : 'text',
+					success : function(result) {
+						setAvailableHours(date);
+						$('#modalDialog').modal('show')
+					},
+					error : function(e) {
+						alert("Error!")
+						console.log("ERROR: ", e);
+					}
+				});
 			});
+		  
+		  $("body").on("click", ".rezerva", function(event){
+			
+			    $('#rezervaModal').modal('show')
+				  
+			  $('.rezervare').attr('id', event.target.id);
+			  
+			  var dtToday = new Date();
+		    	var month = dtToday.getMonth() + 1;
+		    	var day = dtToday.getDate();
+		    	var year = dtToday.getFullYear();
+		    	if(month < 10)
+		       	 	month = '0' + month.toString();
+		    	if(day < 10)
+		        	day = '0' + day.toString();
+		    
+		   		 var maxDate = year + '-' + month + '-' + day;
+
+		    	$('#data').attr('min', maxDate);
+		  });
+		  
+	    });
+
+
+	$('#rezervaModal').on('hidden.bs.modal', function () {
+        $('#hours').html('');
+        $("#fast-charging").prop("checked", false);
+        $("#data").val("");
+		$("#nr_inmatriculare").val("");
+		$("#noHours").html("");
 		});
-	  
-	$("body").on("click", ".rezerva", function(event){
-
-		$('#wrap').addClass("wrapper");
-		$('.overlay').css('display' , 'block');
-		$('#makereservation').css('display', 'block');
-		$('.rezervare').attr('id', event.target.id);
-        
-        var dtToday = new Date();
-    	var month = dtToday.getMonth() + 1;
-    	var day = dtToday.getDate();
-    	var year = dtToday.getFullYear();
-    	if(month < 10)
-       	 	month = '0' + month.toString();
-    	if(day < 10)
-        	day = '0' + day.toString();
-    
-   		 var maxDate = year + '-' + month + '-' + day;
-
-    	$('#data').attr('min', maxDate);
-
-	});
-
-	$(document).mouseup(function(e){
-	    var container = $("#makereservation");
-
-	    // If the target of the click isn't the container
-	    if(!container.is(e.target) && container.has(e.target).length === 0){
-	    	$('#wrap').removeClass("wrapper");
-			$('.overlay').css('display' , 'none');
-	        container.hide();
-	        $('#hours').html('');
-            $("#fast-charging").prop("checked", false);
-            $("#data").val("");
-			$("#nr_inmatriculare").val("");
-	    }
-	});
 	
-	
-  // initialize the map
- // var map = L.map('map').setView([46.769605, 23.588730], 13);
-
-  // load a tile layer
- // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-   // {
-     // maxZoom: 17,
-      //minZoom: 9
-   // }).addTo(map);
  
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
-          center: {lat: 46.769605, lng: 23.588730}
+          center: {lat: 46.775349, lng: 23.622477}
         });
         var geocoder = new google.maps.Geocoder();
           geocodeAddress(geocoder, map);
@@ -217,29 +232,38 @@
            	  var lng = ListAdresses[i].longitudine;
            	  var id = ListAdresses[i].parcareId;
         	  var status = ListAdresses[i].status;
-        	  var html = "CLOSED" + "<br>" + address + "<br>";
-        	  if (status == 1)
-        	  	html = "<div> locuri: " + nr_locuri + "<br>" + address + "<br>" + "<input class='rezerva' type='submit' id='" + id + "' name='rezerva' value='Rezerva' /> </div>";
-        	  
+        	  var oraDeschidere = ListAdresses[i].oraDeschidere;
+        	  var oraInchidere = ListAdresses[i].oraInchidere;
+        	  var html = "<div class='row form-group verical-space'>" +
+              "<span class='width-full' type='text' id='name' name='adresa' placeholder='Adress'>" + address + "</span>" +
+              "</div>" +
+              "<div class='row form-group verical-space'>" +
+              "<span class='width-full closed' type='text' placeholder='Adress'>TEMPORARILY CLOSED</span>" +
+              "</div>";
+        	  if (status == 1){
+        	  		html = "<div class='width-full pop'> <div class='row form-group verical-space'>" +
+                    " <span class='width-full' type='text' id='name' name='adresa' placeholder='Adress'>" + address + "</span>" +
+                    "</div>" +
+                    "<div class='row form-group verical-space'>" +
+                    "<span class='col-xl-5 col-md-5'>locuri: </span> <span class='col-xl-5 col-md-5' type='text' id='name' name='adresa' placeholder='Adress'>" + nr_locuri + "</span>" +
+                  "</div>" +
+                  "<div class='row form-group verical-space'>" +
+                  "<span class='col-xl-5 col-md-5'>Deschidere: </span> <span class='col-xl-5 col-md-5' type='text' id='name' name='adresa' placeholder='Adress'>" + oraDeschidere + "</span>" +
+                "</div>" +
+                "<div class='row form-group verical-space'>" +
+                "<span class='col-xl-5 col-md-5'>Inchidere: </span> <span class='col-xl-5 col-md-5' type='text' id='name' name='adresa' placeholder='Adress'>" + oraInchidere + "</span>" +
+              "</div>" +
+     
+            "<div class='row form-group verical-space'>" +
+            "<input class='rezerva btn btn-primary btn-style col-xl-5' data-toggle='modal' data-target='#exampleModal' type='submit' id='" + id + "' name='rezerva' value='Rezerva' />" +
+          "</div></div>";
+        	  }
         	  var marker = new google.maps.Marker({
                   map: resultsMap,
                   position: new google.maps.LatLng(lat, lng),
+                  icon: "/img/parking-icon.png"
                 });
         	  makeInfoWindowEvent(map, infowindow, html, marker);
-           /* geocoder.geocode({'address': address}, function(results, status) {
-              if (status === 'OK') {
-                resultsMap.setCenter(results[0].geometry.location);
-                console.log(this.address + " " + results[0].geometry.location.lat() + "  " + results[0].geometry.location.lng());
-                var marker = new google.maps.Marker({
-                  map: resultsMap,
-                  position: results[0].geometry.location
-                });
- 
-                makeInfoWindowEvent(map, infowindow, html, marker);
-              } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-              }
-            });*/
           }
           
           function makeInfoWindowEvent(map, infowindow, contentString, marker) {
@@ -255,16 +279,5 @@
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvoYpTH5xFcgsi8CW6Gh7eimOd6AoOIUY&callback=initMap">
     </script>
 
-	<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-		integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-		crossorigin=""></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-		crossorigin="anonymous"></script>
 </body>
 </html>

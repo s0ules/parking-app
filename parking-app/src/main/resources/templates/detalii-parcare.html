@@ -86,10 +86,8 @@
 							<h2 class="col-xl-12 col-md-12">Statistici</h2>
 						</div>
 						<div class="row width-full statistics">
-						<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-							<span class="col-xl-6 col-md-6">Profit</span> <span
-								class="col-xl-6 col-md-6" id="profit" name="profit">150
-								lei</span> <span class="col-xl-6 col-md-6">Locuri ocupate</span> <span
+						<div id="chartContainer" style="height: 300px; width: 80%;"></div>
+						 <span class="col-xl-6 col-md-6">Locuri ocupate acum:</span> <span
 								class="col-xl-6 col-md-6" id="locuri_ocupate"
 								name="locuri_ocupate" th:text="${locuri_ocupate}"></span>
 						</div>
@@ -99,17 +97,13 @@
 							<h2 class="col-xl-12 col-md-12">Administrator</h2>
 						</div>
 						<div class="row width-full statistics">
-							<form id="formParcare" class='width-full'
-								th:action='@{/detalii-parcare/administrator}'
-								th:object='${parcare}' method='post'>
-								<span class="col-xl-6 col-md-6">Email</span> <span
-									class="col-xl-6 col-md-6" id="email" name="email">user@yahoo.com</span>
-								<input type="text" id="firmaEmail"> <span
-									class="col-xl-6 col-md-6">Name</span> <span
-									class="col-xl-6 col-md-6" id="name" name="name">Admin</span>
-								<div class="col-xl-12 col-md-12 button">
-									<button class="btn btn-primary">Edit</button>
-								</div>
+						<div id="successEmail"></div>
+
+							<form id="formAdministrator" class='width-full'	method='post'>
+							
+								<input type="text" id="firmaEmail" class="form-control" name="email" th:value="${parcare.user.email}">
+								<div id="saveAdministrator" class="btn btn-primary form-control">Edit</div>							
+								
 							</form>
 						</div>
 					</div>
@@ -131,76 +125,79 @@
 				$('#status').bootstrapToggle('off');
 			}
 			
+			
+			
+			 $("#saveAdministrator").on("click",function(){
+			        var email = $("#firmaEmail").val();
+			       console.log(email);
+					$.ajax({
+						type : "POST",
+						contentType : "application/json",
+						url : "/detalii-parcare/changeAdministrator",
+					    data : email,
+					    dataType : 'text',
+						success : function(result) {						
+							$("#successEmail").html("<div id='successSaveEmail' class='alert alert-success'>"+
+							'Administrator modificat cu succes!'+
+							"<button type='button' class='close' data-dismiss='alert' aria-label='Close'>"+
+								"<span aria-hidden='true'>&times;</span></button></div>");	
+							$("#successEmail").css("width", "80%");
+						},
+						error : function(e) {
+							alert("Error!")
+							console.log("ERROR: ", e);
+						}
+					});
+				});
+			
 		});
 	
-		
-			window.onload = function() {
-				//chart
-				var dps = [];
-				
-				 
-				var xValue;
-				var yValue;
-				var dataPointsList = [[${dataPointsList}]]; 
-				for (var i = 0; i < dataPointsList.length; i++){
-					dps[i] = [];
-					for (var j = 0; j < dataPointsList[i].length; j++){
-						xValue = parseInt(dataPointsList[i][j].x);
-						yValue = parseFloat(dataPointsList[i][j].y);				
-						dps[i].push({
-							x : xValue,
-							y : yValue
-						});		
-					}
-				}
-				
-				var chart = new CanvasJS.Chart("chartContainer", {
-					theme: "light2", // "light1", "dark1", "dark2"
-					animationEnabled: true,
-					title: {
-						text: "Profitul pe ultimele 7 zile"
-					},
-					axisX: {
-						valueFormatString: "DD-MMM"
-					},
-					axisY: {
-						title: "Valoare in lei",
-						suffix: " lei"
-					},
-					data: [
-					      {        
-					        type: "area",
-					        color: "rgba(0,75,141,0.7)",
-					        dataPoints: [
+		window.onload = function() {
+			//chart
+			var dataPointsList = [[${dataPointsList}]]; 
+			
+			var chart = new CanvasJS.Chart("chartContainer", {
+				theme: "light2", // "light1", "dark1", "dark2"
+				animationEnabled: true,
+				title: {
+					text: "Profitul pe ultimele 7 zile"
+				},
+				axisX: {
+					valueFormatString: "DD-MMM"
+				},
+				axisY: {
+					title: "Valoare in lei",
+					suffix: " lei"
+				},
+				options: {
+	                responsive: false
+	            },
+				data: [
+				      {        
+				        type: "area",
+				        color: "rgba(0,75,141,0.7)",
+				        dataPoints: [
 
-					        { x: new Date(2012, 06, 15), y: 0},       
-					        { x: new Date(2012, 06, 18), y: 20 }, 
-					        { x: new Date(2012, 06, 23), y: 30 }, 
-					        { x: new Date(2012, 07, 1), y: 10}, 
-					        { x: new Date(2012, 07, 11), y: 21}, 
-					        { x: new Date(2012, 07, 23), y: 50} ,
-					        { x: new Date(2012, 07, 31), y: 75}, 
-					        { x: new Date(2012, 08, 04), y: 10},
-					        { x: new Date(2012, 08, 10), y: 12},
-					        { x: new Date(2012, 08, 13), y: 15}, 
-					        { x: new Date(2012, 08, 16), y: 17}, 
-					        { x: new Date(2012, 08, 18), y: 20}, 
-					        { x: new Date(2012, 08, 21), y: 22}, 
-					        { x: new Date(2012, 08, 24), y: 25}, 
-					        { x: new Date(2012, 08, 26), y: 27}, 
-					        { x: new Date(2012, 08, 28), y: 30} 
-					        ]
-					    }
-					    
-					    ]
-					
-				});
+				        { x: new Date(dataPointsList[0].x), y: dataPointsList[0].y},       
+				        { x: new Date(dataPointsList[1].x), y: dataPointsList[1].y}, 
+				        { x: new Date(dataPointsList[2].x), y: dataPointsList[2].y}, 
+				        { x: new Date(dataPointsList[3].x), y: dataPointsList[3].y}, 
+				        { x: new Date(dataPointsList[4].x), y: dataPointsList[4].y}, 
+				        { x: new Date(dataPointsList[5].x), y: dataPointsList[5].y},
+				        { x: new Date(dataPointsList[6].x), y: dataPointsList[6].y}
+				        
+				        ]
+				    }
+				    
+				    ]
 				
 				
-				chart.render();
-				//end chart
-			}
+			});
+			
+			chart.render();
+			//end chart
+		}
 	</script>
-		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		<script src="js/canvasjs.min.js"></script>
 </body>
 </html>

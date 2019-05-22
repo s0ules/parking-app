@@ -33,10 +33,14 @@ public class Statie {
 		
 	}
 	
+	public Statie(Parcare p) {
+		parcare = p;
+	}
+	
 	public int getStatieId() {
 		return statieId;
 	}
-
+	
 	public void setStatieId(int id_statie) {
 		this.statieId = id_statie;
 	}
